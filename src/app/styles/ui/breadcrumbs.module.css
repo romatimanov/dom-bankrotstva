@@ -1,0 +1,29 @@
+.link {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--gray-300);
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+.separator {
+  color: var(--gray-300);
+}
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 60px 0 40px 0;
+}
+.link:hover {
+  color: var(--red-500);
+  border-bottom: 1px solid var(--red-500);
+}
+.link:active {
+  color: var(--red-500);
+  border-bottom: 1px solid var(--red-500);
+}
+@media (max-width: 768px) {
+  .breadcrumbs {
+    padding: 60px 0 16px 0;
+  }
+}

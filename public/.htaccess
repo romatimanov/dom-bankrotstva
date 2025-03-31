@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^article/([^/]+)$ /article?slug=$1 [L,QSA]

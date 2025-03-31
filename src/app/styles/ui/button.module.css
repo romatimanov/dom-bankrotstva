@@ -1,0 +1,29 @@
+.button {
+  padding: 12px 20px;
+  border: 1px solid var(--red-500);
+  border-radius: 3px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--red-600);
+  transition: background 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0px 1px 2px 0px #0000000f;
+  box-shadow: 0px 1px 3px 0px #0000001a;
+  border-color: var(--red-500);
+}
+
+@media (min-width: 920px) {
+  .button:hover {
+    background-color: var(--red-50);
+    color: var(--red-700);
+  }
+}
+
+.button:active {
+  background: var(--gray-200);
+  color: var(--gray-50);
+  box-shadow: 0px 1px 2px 0px #0000000f;
+  box-shadow: 0px 1px 3px 0px #0000001a;
+  border-color: transparent;
+}

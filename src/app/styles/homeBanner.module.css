@@ -1,0 +1,44 @@
+.homeBanner {
+  position: relative;
+}
+.image {
+  width: 100%;
+  min-height: 394px;
+}
+.homeBannerContent {
+  width: 95%;
+  max-width: 890px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #fbf2f2;
+  backdrop-filter: blur(19px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 45px;
+  text-align: center;
+  border-radius: 5px;
+}
+.title {
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: 700;
+  color: #fff;
+}
+.text {
+  font-size: clamp(16px, 3vw, 18px);
+  line-height: clamp(24px, 3vw, 28px);
+  color: #fff;
+}
+.button {
+  width: 100%;
+  max-width: 474px;
+}
+@media (max-width: 768px) {
+  .image {
+    object-fit: cover;
+  }
+}

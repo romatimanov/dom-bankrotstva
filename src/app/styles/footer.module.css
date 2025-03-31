@@ -1,0 +1,131 @@
+.footer {
+  background-color: var(--gray-50);
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 45px;
+}
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 55px;
+}
+.footerLink {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 45px;
+}
+.contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.phone {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--red-500);
+}
+.button {
+  font-size: 14px;
+  color: var(--red-500);
+  border-bottom: 1px solid var(--red-500);
+  width: max-content;
+}
+.footerTitle {
+  color: var(--red-500);
+  font-size: 24px;
+  line-height: 32px;
+}
+.footerText {
+  font-size: 18px;
+  line-height: 28px;
+}
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  text-align: center;
+}
+
+.social {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding-left: 150px;
+}
+
+.copyright {
+  font-size: 12px;
+  color: var(--gray-600);
+}
+
+.policy {
+  font-size: 14px;
+  color: var(--gray-300);
+  border-bottom: 1px solid var(--gray-300);
+  transition: all 0.3s ease;
+}
+@media (min-width: 920px) {
+  .footerLink:hover {
+    color: var(--red-500);
+    border-color: var(--red-500);
+  }
+  .policy:hover {
+    color: var(--red-500);
+    border-color: var(--red-500);
+  }
+}
+@media (max-width: 920px) {
+  .social {
+    padding: 0;
+  }
+}
+@media (max-width: 768px) {
+  .logo img {
+    max-width: 225px;
+  }
+  .footerContent {
+    gap: 25px;
+    margin-bottom: 25px;
+  }
+  .container {
+    padding: 45px 20px;
+  }
+  .line {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    justify-content: center;
+    gap: 16px;
+  }
+  .line > *:nth-child(2) {
+    grid-row: 2;
+  }
+  .line > *:nth-child(2) {
+    grid-row: 3;
+  }
+}
+
+.footerLink:active {
+  color: var(--red-500);
+  border-color: var(--red-500);
+}
+.policy:active {
+  color: var(--red-500);
+  border-color: var(--red-500);
+}

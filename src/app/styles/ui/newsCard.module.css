@@ -1,0 +1,47 @@
+.newsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e1e0e0;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+}
+.tags {
+  font-size: 14px;
+  color: var(--gray-400);
+}
+.title {
+  font-size: 16px;
+  font-weight: 500;
+
+  color: var(--red-500);
+}
+.image {
+  height: 160px;
+  object-fit: cover;
+  border-radius: 5px;
+  object-position: center;
+}
+.date {
+  font-size: 12px;
+  color: var(--gray-400);
+}
+.dateGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.viewsGroup {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 12px;
+  color: var(--gray-400);
+}
+.icon {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

@@ -1,0 +1,50 @@
+.reviewContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 5px;
+  box-shadow: 0px 1px 2px 0px #0000000f;
+  box-shadow: 0px 1px 3px 0px #0000001a;
+  border: 1px solid #e1e0e0;
+  max-width: 700px;
+}
+.textGroup,
+.lineGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.title {
+  font-weight: 500;
+  color: var(--red-500);
+}
+.text {
+  font-size: 14px;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dateText {
+  font-size: 12px;
+  color: var(--gray-700);
+}
+.date {
+  font-size: 12px;
+  color: var(--black);
+}
+
+.sum {
+  font-weight: 500;
+  color: var(--red-500);
+}
+
+.name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gray-900);
+}

@@ -1,0 +1,49 @@
+.mapBlock {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mapBlock iframe {
+  pointer-events: none;
+}
+
+.mapBlock.active iframe {
+  pointer-events: auto;
+  filter: none;
+}
+
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: var(--red-500);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.mapIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.mapText {
+  color: var(--red-500);
+}
+
+.mapIframe {
+  width: 100%;
+  height: 300px;
+  border: none;
+  border-radius: 8px;
+}
+@media (max-width: 600px) {
+  .mapIframe {
+    height: 600px;
+  }
+}
