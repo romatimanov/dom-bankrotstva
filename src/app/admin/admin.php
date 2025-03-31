@@ -45,18 +45,18 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
                 <h2 class="global-title">Все статьи</h2>
                 <div id="articles-list">
                     <table class="articles-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Заголовок</th>
-                                <th>Категория</th>
-                                <th>Теги</th>
-                                <th>Дата</th>
-                                <th>Действия</th>
+                        <thead class="thead">
+                            <tr class="row">
+                                <th class="column">ID</th>
+                                <th class="column">Заголовок</th>
+                                <th class="column">Теги</th>
+                                <th class="column date">Дата</th>
+                                <th class="column">Действия</th>
                             </tr>
                         </thead>
                         <tbody id="articles-table-body"></tbody>
                     </table>
+                    <div id="pagination-container"></div>
                 </div>
             </section>
         </main>

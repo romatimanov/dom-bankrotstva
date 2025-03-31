@@ -3,8 +3,6 @@
 import style from 'app/styles/news.module.css'
 import { useState, useEffect } from 'react'
 import clsx from 'clsx'
-import dynamic from 'next/dynamic'
-import type { SingleValue } from 'react-select'
 import { Button } from 'app/ui/button'
 import { NewsCard } from 'app/ui/newsCard'
 import { formatDate } from 'app/utils/formatedDate'
@@ -16,16 +14,8 @@ import { renderPagination } from '../pagination'
 import { formatTitleToUrl } from 'app/utils/formatUrl'
 import { ButtonBg } from 'app/ui/buttonBg'
 
-const ClientSelect = dynamic(() => import('../clientSelect'), { ssr: false })
-
-type OptionType = {
-  value: string
-  label: string
-}
-
 export function Articles({ setIsOpen }: ModalProps) {
   const [activeTag, setActiveTag] = useState<string | null>(null)
-  const [selectedOption, setSelectedOption] = useState<OptionType | null>(null)
   const [search, setSearch] = useState<string>('')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -33,6 +23,19 @@ export function Articles({ setIsOpen }: ModalProps) {
   const router = useRouter()
   const tags = ['#Банкротство', '#Полное списание долгов', '#Судебная практика', '#Защита прав']
   const perPage = searchQuery || activeTag ? 3 : 8
+  const [randomNews, setRandomNews] = useState<any | null>(null)
+
+  useEffect(() => {
+    if (articles.length > 0) {
+      const index = Math.floor(Math.random() * articles.length)
+      setRandomNews(articles[index])
+    }
+  }, [articles])
+
+  function extractOnlyFirstH2(html: string): string {
+    const match = html.match(/<h2[^>]*>[\s\S]*?<\/h2>/i)
+    return match ? match[0] : ''
+  }
 
   const handleTagClick = (tag: string) => {
     setActiveTag((prev) => (prev === tag ? null : tag))
@@ -49,20 +52,9 @@ export function Articles({ setIsOpen }: ModalProps) {
     setSearchQuery(search)
   }
 
-  const handleSelectChange = (newValue: SingleValue<OptionType>) => {
-    setSelectedOption(newValue)
-  }
-
   useEffect(() => {
     setCurrentPage(1)
   }, [searchQuery, activeTag])
-
-  console.log(articles)
-
-  const selectOptions: OptionType[] = [
-    { value: 'recent', label: 'Сначала новые' },
-    { value: 'popular', label: 'Популярные' }
-  ]
 
   const filteredArticles = articles.filter((article) => {
     const lowerSearch = searchQuery.toLowerCase()
@@ -109,16 +101,6 @@ export function Articles({ setIsOpen }: ModalProps) {
               ))}
             </div>
             <div className={style.groupSearch}>
-              <ClientSelect
-                options={selectOptions}
-                value={selectedOption}
-                onChange={handleSelectChange}
-                placeholder="Категория"
-                isSearchable={false}
-                classNamePrefix="custom"
-                className={style.select}
-              />
-
               <div className={style.search}>
                 <img src="/search.png" alt="search" />
                 <input
@@ -132,6 +114,35 @@ export function Articles({ setIsOpen }: ModalProps) {
               <Button onClick={handleSearch} styles={style.btn}>
                 Найти
               </Button>
+            </div>
+
+            <div className={style.articleInfo} onClick={() => handleClick(randomNews?.title)}>
+              <img
+                className={style.image}
+                src={randomNews?.image_url ? randomNews?.image_url : '/article.png'}
+                alt="image"
+              />
+              <div className={style.infoArticle}>
+                <h2 className={style.title}>{randomNews?.title}</h2>
+                {randomNews?.content && (
+                  <div
+                    className={style.text}
+                    dangerouslySetInnerHTML={{ __html: extractOnlyFirstH2(randomNews.content) }}
+                  />
+                )}
+                <div className={style.line}>
+                  <span className={style.lineContent}>{formatDate(randomNews?.created_at)}</span>
+                  <span className={style.lineContent}>
+                    <img src="/icon/view.svg" alt="view" />
+                    {randomNews?.views}
+                  </span>
+                  {randomNews?.tags.split(',').map((tag: string) => (
+                    <span key={tag} className={style.lineContent}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className={style.cards}>
               {paginatedArticles.length > 0 ? (
@@ -149,7 +160,6 @@ export function Articles({ setIsOpen }: ModalProps) {
                         slug={article.slug}
                         img={article.image_url ? article.image_url : '/article.png'}
                         title={article.title}
-                        text={article.text}
                         tags={article.tags}
                         date={formatDate(article.created_at)}
                         likes={article.likes}

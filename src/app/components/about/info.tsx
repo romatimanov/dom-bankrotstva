@@ -18,7 +18,6 @@ export function Info() {
       'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов'
     )
     setMeta('keywords', 'банкротство, долги, коллекторы')
-    setMeta('robots', 'index, follow')
   }, [])
   return (
     <section className={style.info}>

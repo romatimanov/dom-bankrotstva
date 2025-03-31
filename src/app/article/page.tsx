@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import style from 'app/styles/article.module.css'
 import Breadcrumbs from 'app/ui/breadcrumbs'
-import { useGetArticlesQuery } from 'app/api/articlesApi'
+import { useAddViewMutation, useGetArticlesQuery } from 'app/api/articlesApi'
 import { ButtonBg } from 'app/ui/buttonBg'
 import { formatTitleToUrl } from 'app/utils/formatUrl'
 import { Asnwer } from 'app/components/asnwer'
@@ -21,6 +21,13 @@ export default function Article() {
   const router = useRouter()
   const [isOpenFormModal, setIsOpenFormModal] = useState(false)
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false)
+  const [addView] = useAddViewMutation()
+
+  function extractOnlyFirstH2Text(html: string | undefined | null): string {
+    if (!html) return ''
+    const match = html.match(/<h2[^>]*>(.*?)<\/h2>/i)
+    return match ? match[1].replace(/<\/?[^>]+(>|$)/g, '').trim() : ''
+  }
 
   const handleClick = (title: string) => {
     const formatted = formatTitleToUrl(title)
@@ -36,13 +43,14 @@ export default function Article() {
       tag.setAttribute('content', content)
       if (!tag.parentElement) document.head.appendChild(tag)
     }
-
+    setMeta('title', article?.title ?? 'Разбираем сложные юридические вопросы простыми словами')
     setMeta(
       'description',
-      'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов'
+      extractOnlyFirstH2Text(article?.content) ||
+        'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов'
     )
+
     setMeta('keywords', 'банкротство, долги, коллекторы')
-    setMeta('robots', 'index, follow')
   }, [article])
 
   useEffect(() => {
@@ -76,6 +84,8 @@ export default function Article() {
         .then((data) => {
           if (data.success) {
             setArticle(data.data)
+
+            addView(data.data.id.toString())
           } else {
             setArticle(null)
           }

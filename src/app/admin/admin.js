@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const createSection = document.getElementById('create-article-section')
   const viewSection = document.getElementById('view-articles-section')
   const form = document.getElementById('article-form')
+  let currentPage = 1
+  const perPage = 10
+  let totalPages = 1
 
   const editor = new Jodit('#editor', {
     height: 300,
@@ -29,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = document.getElementById('title').value.trim()
     const content = editor.value.trim()
     const tags = document.getElementById('tags').value.trim()
-    const category = document.getElementById('category').value.trim()
 
     if (!title || !content || !tags || !category) {
       alert('Заполните все поля!')
@@ -84,32 +86,72 @@ document.addEventListener('DOMContentLoaded', () => {
     loadArticles()
   })
 
+  function formatDate(dateString) {
+    const date = new Date(dateString)
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const year = date.getFullYear()
+    return `${day}.${month}.${year}`
+  }
+
   function loadArticles() {
     fetch('/get_article.php')
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
+          const articles = data.data
+          totalPages = Math.ceil(articles.length / perPage)
+          const start = (currentPage - 1) * perPage
+          const end = currentPage * perPage
+          const paginated = articles.slice(start, end)
+
           const tbody = document.getElementById('articles-table-body')
           tbody.innerHTML = ''
-          data.data.forEach((article) => {
+          paginated.forEach((article) => {
             const tr = document.createElement('tr')
             tr.innerHTML = `
               <td>${article.id}</td>
               <td>${article.title}</td>
-              <td>${article.category}</td>
               <td>${article.tags}</td>
-              <td>${article.created_at}</td>
+              <td class="date">${formatDate(article.created_at)}</td>
               <td>
-                <button class="button-small" onclick="editArticle(${article.id})">Редактировать</button>
-                <button class="button-small" onclick="deleteArticle(${article.id})">Удалить</button>
+                <button class="button-small" onclick="editArticle(${article.id})">
+                <img src="/icon/edit.svg" alt="edit" />
+                </button>
+                <button class="button-small" onclick="deleteArticle(${
+                  article.id
+                })">  <img src="/icon/delete.svg" alt="edit" /></button>
               </td>
             `
             tbody.appendChild(tr)
           })
+
+          renderPaginationComponent()
         } else {
           alert('Ошибка загрузки: ' + data.error)
         }
       })
+  }
+
+  function renderPaginationComponent() {
+    const container = document.getElementById('pagination-container')
+    container.innerHTML = ''
+
+    const pagDiv = document.createElement('div')
+    pagDiv.className = 'pagination'
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button')
+      btn.innerText = i
+      btn.className = i === currentPage ? 'active' : ''
+      btn.addEventListener('click', () => {
+        currentPage = i
+        loadArticles()
+      })
+      pagDiv.appendChild(btn)
+    }
+
+    container.appendChild(pagDiv)
   }
 
   window.editArticle = function (id) {

@@ -1,11 +1,12 @@
 <?php
 session_start();
+require_once 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST['username'] ?? '';
     $pass = $_POST['password'] ?? '';
 
-    if ($user === 'admin' && $pass === '1234') {
+    if ($user === ADMIN_USER && password_verify($pass, ADMIN_PASS_HASH)) {
         $_SESSION['is_admin'] = true;
         header('Location: /admin.php');
         exit;
@@ -13,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Неверный логин или пароль';
     }
 }
+?>
 ?>
 
 <!DOCTYPE html>

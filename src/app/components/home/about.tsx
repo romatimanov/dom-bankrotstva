@@ -24,7 +24,6 @@ export function About({ setIsOpen }: ModalProps) {
       'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов'
     )
     setMeta('keywords', 'банкротство, долги, коллекторы')
-    setMeta('robots', 'index, follow')
   }, [])
 
   if (resize === null) return null

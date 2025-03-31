@@ -48,7 +48,6 @@ $title = trim($data['title'] ?? '');
 $content = trim($data['content'] ?? '');
 $image = trim($data['image_url'] ?? '');
 $tags = trim($data['tags'] ?? '');
-$category = trim($data['category'] ?? '');
 
 
 if ($title === '' || $content === '') {
@@ -74,8 +73,8 @@ while (true) {
 }
 
 try {
-    $stmt = $pdo->prepare("INSERT INTO articles (title, category, content, image_url, tags, slug) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$title, $category, $content, $image, $tags, $slug]);
+    $stmt = $pdo->prepare("INSERT INTO articles (title,  content, image_url, tags, slug) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$title, $content, $image, $tags, $slug]);
 
 
     echo json_encode([

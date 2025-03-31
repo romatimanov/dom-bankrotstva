@@ -93,7 +93,7 @@ try {
             ]);
         }
     } else {
-        $stmt = $pdo->query("SELECT id, title, slug, image_url, category, content, likes, views, tags, created_at FROM articles ORDER BY created_at DESC");
+        $stmt = $pdo->query("SELECT id, title, slug, image_url, content, likes, views, tags, created_at FROM articles ORDER BY created_at DESC");
         $articles = $stmt->fetchAll();
 
         echo json_encode([

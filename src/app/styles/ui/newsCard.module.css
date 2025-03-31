@@ -1,12 +1,18 @@
 .newsCard {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 12px;
   padding: 16px;
   border: 1px solid #e1e0e0;
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
+}
+.textGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 .tags {
   font-size: 14px;
@@ -44,4 +50,11 @@
   display: flex;
   align-items: center;
   gap: 4px;
+}
+.like svg path {
+  color: var(--gray-400);
+  transition: all 0.3s ease;
+}
+.like:hover svg path {
+  stroke: red;
 }

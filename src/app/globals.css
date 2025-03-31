@@ -216,45 +216,6 @@ button {
   align-items: center;
   justify-content: space-between;
 }
-.select {
-  width: 240px;
-}
-
-.custom__control {
-  width: 100%;
-  border: 0.5px solid #bab6b6;
-  box-shadow: none;
-  font-size: 14px;
-  padding: 7px 16px;
-  cursor: pointer;
-  background-color: #fff;
-}
-
-.custom__single-value {
-  color: #333;
-  font-size: 14px;
-}
-
-.custom__dropdown-indicator {
-  color: #bab6b6;
-}
-.custom__indicator-separator {
-  display: none;
-}
-
-.custom__menu {
-  font-size: 14px;
-  z-index: 10;
-}
-
-.custom__option {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.custom__option--is-focused {
-  background-color: #f5f5f5;
-}
 
 @media (max-width: 768px) {
   .container {
