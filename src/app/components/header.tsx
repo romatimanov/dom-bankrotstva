@@ -6,7 +6,6 @@ import { useResize } from 'app/hook/useResize'
 import { useEffect, useState } from 'react'
 import Modal from './modal'
 import ModalSuccess from './modalSuccess'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { CustomLink } from 'app/ui/customLink'
 
@@ -55,9 +54,10 @@ export function Header() {
       style={!burger ? { overflow: 'hidden' } : {}}
     >
       <div className={`${style.header}`}>
-        <Link href="/news" className={style.logo}>
+        <Link href="/" className={style.logo}>
           <img src="/logo.png" alt="" />
         </Link>
+
         {!resize && (
           <nav className={style.nav}>
             <ul className={style.list}>
@@ -97,10 +97,10 @@ export function Header() {
         )}
       </div>
       <div className={`${style.menu} ${burger ? style.open : ''}`}>
-        <CustomLink styles={style.menuBtn} href="/about">
+        <CustomLink href="/about" styles={style.menuBtn}>
           О компании
         </CustomLink>
-        <CustomLink styles={style.menuBtn} href="/news">
+        <CustomLink href="/news" styles={style.menuBtn}>
           Новости
         </CustomLink>
         <Button styles={style.menuBtn}>Контакты</Button>

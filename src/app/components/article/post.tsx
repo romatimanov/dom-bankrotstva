@@ -61,7 +61,7 @@ export function Post() {
 
       refetch()
 
-      fetch(`http://localhost:8000/get_article.php?slug=${slug}`)
+      fetch(`https://dom-bankrotstva.vercel.app/get_article.php?slug=${slug}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
@@ -78,7 +78,7 @@ export function Post() {
   useEffect(() => {
     if (slug) {
       setLoading(true)
-      fetch(`http://localhost:8000/get_article.php?slug=${slug}`)
+      fetch(`https://dom-bankrotstva.vercel.app/get_article.php?slug=${slug}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {

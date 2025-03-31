@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const articlesApi = createApi({
   reducerPath: 'articlesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://dom-bankrotstva.vercel.app/' }),
   endpoints: (builder) => ({
     getArticles: builder.query<any[], void>({
       query: () => 'get_article.php',
