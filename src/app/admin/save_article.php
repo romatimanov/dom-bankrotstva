@@ -25,6 +25,8 @@ try {
     exit;
 }
 
+
+
 function slugify($text)
 {
     $text = strtolower($text);
