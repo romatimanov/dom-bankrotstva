@@ -7,13 +7,15 @@ import { useEffect, useState } from 'react'
 import Modal from './modal'
 import ModalSuccess from './modalSuccess'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { CustomLink } from 'app/ui/customLink'
 
 export function Header() {
   const [burger, setBurger] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
   const [isOpenFormModal, setIsOpenFormModal] = useState(false)
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false)
-  const router = useRouter()
+
   // useEffect(() => {
   //   const handleScroll = () => {
   //     setIsSticky(window.scrollY > 100)
@@ -53,18 +55,18 @@ export function Header() {
       style={!burger ? { overflow: 'hidden' } : {}}
     >
       <div className={`${style.header}`}>
-        <div className={style.logo} onClick={() => router.push('/')}>
+        <Link href="/news" className={style.logo}>
           <img src="/logo.png" alt="" />
-        </div>
+        </Link>
         {!resize && (
           <nav className={style.nav}>
             <ul className={style.list}>
-              <li className={style.item} onClick={() => router.push('/about')}>
+              <Link href="/about" className={style.item}>
                 О компании
-              </li>
-              <li className={style.item} onClick={() => router.push('/news')}>
+              </Link>
+              <Link href="/news" className={style.item}>
                 Новости
-              </li>
+              </Link>
               <li className={style.item}>Контакты</li>
             </ul>
           </nav>
@@ -95,12 +97,12 @@ export function Header() {
         )}
       </div>
       <div className={`${style.menu} ${burger ? style.open : ''}`}>
-        <Button styles={style.menuBtn} onClick={() => router.push('/about')}>
+        <CustomLink styles={style.menuBtn} href="/about">
           О компании
-        </Button>
-        <Button styles={style.menuBtn} onClick={() => router.push('/news')}>
+        </CustomLink>
+        <CustomLink styles={style.menuBtn} href="/news">
           Новости
-        </Button>
+        </CustomLink>
         <Button styles={style.menuBtn}>Контакты</Button>
         <Button onClick={handleClick}>Получить консультацию</Button>
       </div>
