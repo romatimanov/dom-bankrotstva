@@ -1,6 +1,10 @@
 <?php
 header('Content-Type: application/json');
-$pdo = new PDO("mysql:host=127.0.0.1;dbname=my_site;charset=utf8mb4", "root", "root");
+$pdo = new PDO(
+    "mysql:host=localhost;dbname=u3042332_my_site;charset=utf8mb4",
+    "u3042332_my_site",
+    "mysite_password"
+);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);

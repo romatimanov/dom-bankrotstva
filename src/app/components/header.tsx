@@ -8,21 +8,25 @@ import Modal from './modal'
 import ModalSuccess from './modalSuccess'
 import Link from 'next/link'
 import { CustomLink } from 'app/ui/customLink'
+import { usePathname } from 'next/navigation'
 
 export function Header() {
   const [burger, setBurger] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
   const [isOpenFormModal, setIsOpenFormModal] = useState(false)
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false)
+  const pathname = usePathname()
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     setIsSticky(window.scrollY > 100)
-  //   }
+  const contactsHref = pathname === '/news' ? '#contacts' : '#footer'
 
-  //   window.addEventListener('scroll', handleScroll)
-  //   return () => window.removeEventListener('scroll', handleScroll)
-  // }, [])
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 100)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const handleBurger = () => setBurger(!burger)
   const resize = useResize(768)
@@ -46,16 +50,21 @@ export function Header() {
     setIsOpenFormModal(true)
   }
 
+  const closeMenu = () => {
+    setBurger(false)
+    document.body.classList.remove('menu-open')
+  }
+
   if (resize === null) return null
 
   return (
     <header
-      className={`container ${style.headerWrapper} ${isSticky ? style.sticky : ''}`}
+      className={`${style.headerWrapper} ${isSticky ? style.sticky : ''}`}
       style={!burger ? { overflow: 'hidden' } : {}}
     >
-      <div className={`${style.header}`}>
+      <div className={`${style.header} container`}>
         <Link href="/" className={style.logo}>
-          <img src="/logo.png" alt="" />
+          <img src="/logo.webp" alt="" />
         </Link>
 
         {!resize && (
@@ -67,7 +76,9 @@ export function Header() {
               <Link href="/news" className={style.item}>
                 Новости
               </Link>
-              <li className={style.item}>Контакты</li>
+              <Link href={contactsHref} className={style.item}>
+                Контакты
+              </Link>
             </ul>
           </nav>
         )}
@@ -86,7 +97,7 @@ export function Header() {
         ) : (
           <div className={style.mobileMenu}>
             <a href="tel:88007000399" className={style.number}>
-              <img src="/phone.png" alt="phone" />
+              <img src="/phone.webp" alt="phone" />
             </a>
             <button className={`${style.burger} ${burger && style.open}`} onClick={handleBurger}>
               <div className={style.mobileMenuLine}></div>
@@ -97,13 +108,15 @@ export function Header() {
         )}
       </div>
       <div className={`${style.menu} ${burger ? style.open : ''}`}>
-        <CustomLink href="/about" styles={style.menuBtn}>
+        <CustomLink href="/about" styles={style.menuBtn} onClick={closeMenu}>
           О компании
         </CustomLink>
-        <CustomLink href="/news" styles={style.menuBtn}>
+        <CustomLink href="/news" styles={style.menuBtn} onClick={closeMenu}>
           Новости
         </CustomLink>
-        <Button styles={style.menuBtn}>Контакты</Button>
+        <CustomLink href={contactsHref} styles={style.menuBtn} onClick={closeMenu}>
+          Контакты
+        </CustomLink>
         <Button onClick={handleClick}>Получить консультацию</Button>
       </div>
       <Modal

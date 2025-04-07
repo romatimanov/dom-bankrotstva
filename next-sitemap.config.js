@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://dom-bankrotstva.vercel.app',
+  siteUrl: 'localhost:3000',
   generateRobotsTxt: true,
   outDir: 'out'
 }

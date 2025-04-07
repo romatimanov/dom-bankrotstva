@@ -58,3 +58,36 @@
 .like:hover svg path {
   stroke: red;
 }
+.tagsGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.buttonPost {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--red-800);
+  font-size: 14px;
+}
+.postTitle {
+  color: var(--gray-700);
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+  width: max-content;
+}
+
+@media (min-width: 920px) {
+  .postTitle:hover {
+    color: var(--red-500);
+    border-color: var(--red-500);
+  }
+}
+@media (max-width: 768px) {
+  .postTitle {
+    width: auto;
+  }
+}
+.postTitle:active {
+  color: var(--red-500);
+}

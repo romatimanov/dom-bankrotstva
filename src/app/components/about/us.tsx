@@ -60,7 +60,7 @@ export function Us({ setIsOpen }: ModalProps) {
         <Banner />
       </div>
       <HomeBanner
-        img="/banner.png"
+        img="/banner.webp"
         title="Начните жизнь с чистого листа!"
         text="Получите консультацию юриста и узнайте сроки и стоимость списания вашего долга уже сегодня"
         btn={resize ? 'консультация с экспертом' : '"Записаться на консультацию с экспертом"'}

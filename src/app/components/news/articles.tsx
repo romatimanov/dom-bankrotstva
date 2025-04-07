@@ -11,7 +11,6 @@ import { useGetArticlesQuery } from 'app/api/articlesApi'
 import { HomeBanner } from '../homeBanner'
 import { ModalProps } from 'app/type/modal'
 import { renderPagination } from '../pagination'
-import { formatTitleToUrl } from 'app/utils/formatUrl'
 import { ButtonBg } from 'app/ui/buttonBg'
 
 export function Articles({ setIsOpen }: ModalProps) {
@@ -19,7 +18,7 @@ export function Articles({ setIsOpen }: ModalProps) {
   const [search, setSearch] = useState<string>('')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const { data: articles = [] } = useGetArticlesQuery()
+  const { data: articles = [], isLoading } = useGetArticlesQuery()
   const router = useRouter()
   const tags = ['#Банкротство', '#Полное списание долгов', '#Судебная практика', '#Защита прав']
   const perPage = searchQuery || activeTag ? 3 : 8
@@ -40,10 +39,10 @@ export function Articles({ setIsOpen }: ModalProps) {
   const handleTagClick = (tag: string) => {
     setActiveTag((prev) => (prev === tag ? null : tag))
   }
-  const handleClick = (title: string) => {
-    const formatted = formatTitleToUrl(title)
-    router.push(`/article?title=${formatted}`)
+  const handleClick = (slug: string) => {
+    router.push(`/news/${slug}`)
   }
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
   }
@@ -71,6 +70,14 @@ export function Articles({ setIsOpen }: ModalProps) {
     (currentPage - 1) * perPage,
     currentPage * perPage
   )
+
+  {
+    isLoading && (
+      <div className={style.loaderWrapper}>
+        <div className={style.loader}></div>
+      </div>
+    )
+  }
 
   return (
     <section className={style.articles}>
@@ -102,7 +109,7 @@ export function Articles({ setIsOpen }: ModalProps) {
             </div>
             <div className={style.groupSearch}>
               <div className={style.search}>
-                <img src="/search.png" alt="search" />
+                <img src="/search.webp" alt="search" />
                 <input
                   className={style.input}
                   placeholder="Введите ваш запрос"
@@ -116,34 +123,37 @@ export function Articles({ setIsOpen }: ModalProps) {
               </Button>
             </div>
 
-            <div className={style.articleInfo} onClick={() => handleClick(randomNews?.title)}>
-              <img
-                className={style.image}
-                src={randomNews?.image_url ? randomNews?.image_url : '/article.png'}
-                alt="image"
-              />
-              <div className={style.infoArticle}>
-                <h2 className={style.title}>{randomNews?.title}</h2>
-                {randomNews?.content && (
-                  <div
-                    className={style.text}
-                    dangerouslySetInnerHTML={{ __html: extractOnlyFirstH2(randomNews.content) }}
-                  />
-                )}
-                <div className={style.line}>
-                  <span className={style.lineContent}>{formatDate(randomNews?.created_at)}</span>
-                  <span className={style.lineContent}>
-                    <img src="/icon/view.svg" alt="view" />
-                    {randomNews?.views}
-                  </span>
-                  {randomNews?.tags.split(',').map((tag: string) => (
-                    <span key={tag} className={style.lineContent}>
-                      {tag}
+            {articles.length > 0 && !searchQuery && !activeTag && randomNews && (
+              <div className={style.articleInfo} onClick={() => handleClick(randomNews.title)}>
+                <img
+                  className={style.image}
+                  src={randomNews.image_url ? randomNews.image_url : '/article.webp'}
+                  alt="image"
+                />
+                <div className={style.infoArticle}>
+                  <h2 className={style.title}>{randomNews.title}</h2>
+                  {randomNews.content && (
+                    <div
+                      className={style.text}
+                      dangerouslySetInnerHTML={{ __html: extractOnlyFirstH2(randomNews.content) }}
+                    />
+                  )}
+                  <div className={style.line}>
+                    <span className={style.lineContent}>{formatDate(randomNews.created_at)}</span>
+                    <span className={style.lineContent}>
+                      <img src="/icon/view.svg" alt="view" />
+                      {randomNews.views}
                     </span>
-                  ))}
+                    {randomNews.tags.split(',').map((tag: string) => (
+                      <span key={tag} className={style.lineContent}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+
             <div className={style.cards}>
               {paginatedArticles.length > 0 ? (
                 <>
@@ -158,12 +168,14 @@ export function Articles({ setIsOpen }: ModalProps) {
                         key={article.id}
                         id={article.id}
                         slug={article.slug}
-                        img={article.image_url ? article.image_url : '/article.png'}
+                        img={article.image_url ? article.image_url : '/article.webp'}
                         title={article.title}
                         tags={article.tags}
                         date={formatDate(article.created_at)}
                         likes={article.likes}
                         views={article.views}
+                        search={!!searchQuery || !!activeTag}
+                        onClick={() => handleClick(article.slug)}
                       />
                     ))}
                   </div>

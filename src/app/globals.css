@@ -136,6 +136,9 @@ button {
   font-weight: 700;
   color: #fff;
 }
+.global-title--add {
+  padding-left: 80px;
+}
 .global-text--home {
   font-size: clamp(16px, 3vw, 18px);
   line-height: clamp(24px, 3vw, 28px);
@@ -229,5 +232,8 @@ button {
   }
   .select {
     width: 100%;
+  }
+  .global-title--add {
+    padding: 0;
   }
 }

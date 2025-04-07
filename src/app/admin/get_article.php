@@ -1,16 +1,16 @@
 <?php
 
-header("Access-Control-Allow-Origin: https://dom-bankrotstva.vercel.app");
+header("Access-Control-Allow-Origin: localhost:3000");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 header("Access-Control-Allow-Methods: GET, OPTIONS");
 header('Content-Type: application/json');
-ob_clean();
 
-$host = '127.0.0.1';
-$db = 'my_site';
-$user = 'root';
-$pass = 'root';
+$host = 'localhost';
+$db = 'u3042332_my_site';
+$user = 'u3042332_my_site';
+$pass = 'mysite_password';
 $charset = 'utf8mb4';
+
 
 $dsn = "mysql:host=$host;port=3306;dbname=$db;charset=$charset";
 $options = [

@@ -5,9 +5,14 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header('Content-Type: application/json');
 
 try {
-    $pdo = new PDO("mysql:host=127.0.0.1;dbname=my_site;charset=utf8mb4", "root", "root", [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
+    $pdo = new PDO(
+        "mysql:host=localhost;dbname=u3042332_my_site;charset=utf8mb4",
+        "u3042332_my_site",
+        "mysite_password",
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ]
+    );
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'error' => 'Ошибка подключения к базе данных']);
     exit;

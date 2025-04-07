@@ -68,7 +68,7 @@ export default function Modal({ isOpen, onClose, onSuccess }: ModalProps) {
     <div className={style.overlay} onClick={handleOverlayClick}>
       <div className={style.modal} ref={modalRef}>
         <button className={style.close} onClick={onClose}>
-          <img src="/close.png" alt="close" />
+          <img src="/close.webp" alt="close" />
         </button>
         <div className={style.content}>
           <h2 className={style.title}>

@@ -30,7 +30,7 @@ export function Steps({ setIsOpen }: ModalProps) {
             </div>
             <div className={style.stepNumberGroup}>
               <div className={style.stepNum}>01</div>
-              <img className={style.stepArrow} src="/arrow.png" alt="arrow" />
+              <img className={style.stepArrow} src="/arrow.webp" alt="arrow" />
             </div>
             <div className={style.empty}></div>
           </div>
@@ -38,7 +38,7 @@ export function Steps({ setIsOpen }: ModalProps) {
             <div className={style.empty}></div>
             <div className={style.stepNumberGroup}>
               <div className={style.stepNum}>02</div>
-              <img className={style.stepArrow} src="/arrow.png" alt="arrow" />
+              <img className={style.stepArrow} src="/arrow.webp" alt="arrow" />
             </div>
             <div className={`${style.stepContent} ${style.alignLeft}`}>
               <div className={style.stepMobile}>
@@ -63,7 +63,7 @@ export function Steps({ setIsOpen }: ModalProps) {
             </div>
             <div className={style.stepNumberGroup}>
               <div className={style.stepNum}>03</div>
-              <img className={style.stepArrow} src="/arrow.png" alt="arrow" />
+              <img className={style.stepArrow} src="/arrow.webp" alt="arrow" />
             </div>
             <div className={style.empty}></div>
           </div>

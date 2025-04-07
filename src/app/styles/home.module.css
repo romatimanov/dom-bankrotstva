@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-image: url('../../../public/home.png');
+  background-image: url('../../../public/home.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -391,6 +391,8 @@
 }
 .img img {
   border-radius: 5px;
+  height: 100%;
+  object-fit: cover;
 }
 /* contact */
 
@@ -485,7 +487,7 @@
   .home {
     position: inherit;
     justify-content: flex-start;
-    background-image: url('../../../public/home-mobile.png');
+    background-image: url('../../../public/home-mobile.webp');
     min-height: auto;
   }
   .home::after {

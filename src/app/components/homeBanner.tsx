@@ -10,7 +10,7 @@ type HomeBannerProps = {
 }
 
 export function HomeBanner({
-  img = '/banner-default.png',
+  img = '/banner-default.webp',
   title,
   text,
   btn,

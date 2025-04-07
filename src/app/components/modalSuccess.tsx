@@ -44,7 +44,7 @@ export default function ModalSuccess({ isOpen, onClose }: ModalProps) {
     <div className={style.overlay} onClick={handleOverlayClick}>
       <div className={`${style.modal} ${style.modalSuccess}`} ref={modalRef}>
         <button className={style.close} onClick={onClose}>
-          <img src="/close.png" alt="close" />
+          <img src="/close.webp" alt="close" />
         </button>
         <div className={style.contentSuccess}>
           <h2 className={`${style.title} ${style.titleSuccess}`}>Спасибо за заявку!</h2>

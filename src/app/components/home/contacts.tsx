@@ -1,9 +1,9 @@
 import style from 'app/styles/home.module.css'
 import { Map } from '../map'
 
-export function Contacts() {
+export function Contacts({ id }: { id: string }) {
   return (
-    <section className={style.contacts}>
+    <section className={style.contacts} id={id}>
       <div className="container">
         <div className="text-group">
           <h2 className="global-subtitle">НАШИ КОНТАКТЫ</h2>

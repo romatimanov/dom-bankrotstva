@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-image: url('../../../public/about.png');
+  background-image: url('../../../public/about.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -89,7 +89,7 @@
   }
   .info {
     position: inherit;
-    background-image: url('../../../public/about-mobile.png');
+    background-image: url('../../../public/about-mobile.webp');
     min-height: 400px;
   }
   .info::after {

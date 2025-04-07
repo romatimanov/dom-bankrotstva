@@ -1,6 +1,7 @@
 'use client'
+
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import style from 'app/styles/article.module.css'
 import Breadcrumbs from 'app/ui/breadcrumbs'
 import { useAddViewMutation, useGetArticlesQuery } from 'app/api/articlesApi'
@@ -9,113 +10,50 @@ import { formatTitleToUrl } from 'app/utils/formatUrl'
 import { Asnwer } from 'app/components/asnwer'
 import Modal from 'app/components/modal'
 import ModalSuccess from 'app/components/modalSuccess'
+import { Article } from 'app/interfaces/articles'
 
-export function Post() {
-  const searchParams = useSearchParams()
-  const slug = searchParams.get('title')
-  const [article, setArticle] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [headings, setHeadings] = useState<{ text: string; id: string }[]>([])
-  const { data: articles = [], refetch } = useGetArticlesQuery()
+interface PostProps {
+  article: Article
+}
+
+export function Post({ article }: PostProps) {
   const router = useRouter()
+  const [parsedContent, setParsedContent] = useState<string>('')
   const [isOpenFormModal, setIsOpenFormModal] = useState(false)
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false)
+  const [headings, setHeadings] = useState<{ text: string; id: string }[]>([])
+
+  const { data: articles = [], refetch: refetchArticles } = useGetArticlesQuery()
   const [addView] = useAddViewMutation()
 
-  function extractOnlyFirstH2Text(html: string | undefined | null): string {
-    if (!html) return ''
-    const match = html.match(/<h2[^>]*>(.*?)<\/h2>/i)
-    return match ? match[1].replace(/<\/?[^>]+(>|$)/g, '').trim() : ''
-  }
+  useEffect(() => {
+    if (!article?.id) return
+    addView(String(article.id))
+  }, [article?.id])
+
+  useEffect(() => {
+    if (!article?.content) return
+
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(article.content, 'text/html')
+    const h2s = doc.querySelectorAll('h2')
+    const headingsArray: { text: string; id: string }[] = []
+
+    h2s.forEach((h2, index) => {
+      const text = h2.textContent || `section-${index}`
+      const id = `section-${index}`
+      h2.setAttribute('id', id)
+      headingsArray.push({ text, id })
+    })
+
+    setHeadings(headingsArray)
+    setParsedContent(doc.body.innerHTML)
+  }, [article])
 
   const handleClick = (title: string) => {
     const formatted = formatTitleToUrl(title)
-    router.push(`/article?title=${formatted}`)
+    router.push(`/article/${formatted}`)
   }
-
-  useEffect(() => {
-    document.title = article?.title ?? 'Разбираем сложные юридические вопросы простыми словами'
-
-    const setMeta = (name: string, content: string) => {
-      let tag = document.querySelector(`meta[name="${name}"]`) || document.createElement('meta')
-      tag.setAttribute('name', name)
-      tag.setAttribute('content', content)
-      if (!tag.parentElement) document.head.appendChild(tag)
-    }
-    setMeta('title', article?.title ?? 'Разбираем сложные юридические вопросы простыми словами')
-    setMeta(
-      'description',
-      extractOnlyFirstH2Text(article?.content) ||
-        'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов'
-    )
-
-    setMeta('keywords', 'банкротство, долги, коллекторы')
-  }, [article])
-
-  useEffect(() => {
-    const channel = new BroadcastChannel('article_channel')
-
-    channel.onmessage = (event) => {
-      const { slug } = event.data
-      if (!slug) return
-
-      refetch()
-
-      fetch(`https://dom-bankrotstva.vercel.app/get_article.php?slug=${slug}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            setArticle(data.data)
-            setLoading(false)
-          }
-        })
-        .catch(() => setLoading(false))
-    }
-
-    return () => channel.close()
-  }, [refetch])
-
-  useEffect(() => {
-    if (slug) {
-      setLoading(true)
-      fetch(`https://dom-bankrotstva.vercel.app/get_article.php?slug=${slug}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            setArticle(data.data)
-
-            addView(data.data.id.toString())
-          } else {
-            setArticle(null)
-          }
-          setLoading(false)
-        })
-        .catch(() => setLoading(false))
-    }
-  }, [slug])
-
-  useEffect(() => {
-    if (article?.content) {
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(article.content, 'text/html')
-      const h2s = doc.querySelectorAll('h2')
-
-      const headingsArray: { text: string; id: string }[] = []
-
-      h2s.forEach((h2, index) => {
-        const text = h2.textContent || `section-${index}`
-        const id = `section-${index}`
-        h2.setAttribute('id', id)
-        headingsArray.push({ text, id })
-      })
-
-      article.content = doc.body.innerHTML
-      setHeadings(headingsArray)
-    }
-  }, [article])
-
-  if (loading) return <p style={{ padding: 40 }}>Загрузка...</p>
-  if (!article) return <p style={{ padding: 40 }}>Статья не найдена</p>
 
   return (
     <div className={style.article}>
@@ -141,25 +79,32 @@ export function Post() {
 
             <div
               className={style.articleText}
-              dangerouslySetInnerHTML={{ __html: article.content }}
+              dangerouslySetInnerHTML={{ __html: parsedContent }}
             />
+
             <div className={style.articleBanner}>
               <div className={style.articleBannerContent}>
                 <h3 className={style.articleBannerTitle}>Остались вопросы?</h3>
-                <p className={style.articleBannerText}>Получите бесплатную консультацию юриста! </p>
+                <p className={style.articleBannerText}>Получите бесплатную консультацию юриста!</p>
               </div>
               <ButtonBg onClick={() => setIsOpenFormModal(true)}>Хочу списать долг</ButtonBg>
             </div>
+
             <div className={style.related}>
               <h3 className={style.relatedTitle}>Статьи по теме</h3>
               <ul className={style.relatedList}>
                 {articles
-                  .filter((a) => a.category === article.category && a.id !== article.id)
+                  .filter((a) => a.id !== article.id)
+                  .filter((a) => {
+                    const currentTags = article.tags?.split(' ').map((tag: string) => tag.trim())
+                    const otherTags = a.tags?.split(' ').map((tag: string) => tag.trim())
+                    return currentTags?.some((tag: string) => otherTags?.includes(tag))
+                  })
                   .slice(0, 5)
                   .map((relatedArticle) => (
                     <li
-                      className={style.relatedItem}
                       key={relatedArticle.id}
+                      className={style.relatedItem}
                       onClick={() => handleClick(relatedArticle.title)}
                     >
                       <img src="/icon/arrow-news.svg" alt="arrow" />
@@ -175,19 +120,15 @@ export function Post() {
               <h4 className={style.asideTitle}>Новости за неделю</h4>
               <ul className={style.asideList}>
                 {articles
-                  .filter((article) => {
+                  .filter((a) => {
                     const now = new Date()
                     const weekAgo = new Date()
                     weekAgo.setDate(now.getDate() - 7)
-                    return new Date(article.created_at) >= weekAgo
+                    return new Date(a.created_at) >= weekAgo
                   })
-                  .map((article) => (
-                    <li
-                      className={style.asideItem}
-                      key={article.id}
-                      onClick={() => handleClick(article.title)}
-                    >
-                      {article.title}
+                  .map((a) => (
+                    <li key={a.id} className={style.asideItem} onClick={() => handleClick(a.title)}>
+                      {a.title}
                     </li>
                   ))}
               </ul>

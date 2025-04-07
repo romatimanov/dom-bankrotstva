@@ -5,11 +5,16 @@ type Button = {
   styles?: string
   children: string
   href: string
+  onClick?: () => void
 }
 
 export function CustomLink({ children, ...props }: Button) {
   return (
-    <Link href={props.href} className={`${style.button} ${props.styles ?? ''}`}>
+    <Link
+      href={props.href}
+      className={`${style.button} ${props.styles ?? ''}`}
+      onClick={props.onClick}
+    >
       {children}
     </Link>
   )

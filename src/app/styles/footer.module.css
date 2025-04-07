@@ -38,6 +38,7 @@
   font-size: 32px;
   font-weight: 700;
   color: var(--red-500);
+  white-space: nowrap;
 }
 .button {
   font-size: 14px;
@@ -80,6 +81,13 @@
   border-bottom: 1px solid var(--gray-300);
   transition: all 0.3s ease;
 }
+.socialLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--red-800);
+}
 @media (min-width: 920px) {
   .footerLink:hover {
     color: var(--red-500);
@@ -104,7 +112,7 @@
     margin-bottom: 25px;
   }
   .container {
-    padding: 45px 20px;
+    padding: 45px 15px;
   }
   .line {
     display: grid;
@@ -118,6 +126,9 @@
   }
   .line > *:nth-child(2) {
     grid-row: 3;
+  }
+  .policy {
+    font-size: 12px;
   }
 }
 

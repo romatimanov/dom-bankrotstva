@@ -1,11 +1,12 @@
 import style from 'app/styles/footer.module.css'
+import Link from 'next/link'
 
 export function Footer() {
   return (
-    <footer className={style.footer}>
+    <footer className={style.footer} id="footer">
       <div className={style.container}>
         <div className={style.logo}>
-          <img src="/footer-logo.png" alt="logo" />
+          <img src="/footer-logo.webp" alt="logo" />
         </div>
         <div className={style.footerContent}>
           <div className={style.contacts}>
@@ -38,19 +39,24 @@ export function Footer() {
         <div className={style.line}>
           <p className={style.copyright}>©Все права защищены. 2024</p>
           <div className={style.social}>
-            <a href="https://vk.com/Alpha_Vista" target="_blank" rel="noopener noreferrer">
-              <img src="/vk.png" alt="vk" />
-            </a>
-            <a href="https://t.me/Alpha_Vista" target="_blank" rel="noopener noreferrer">
-              <img src="/tg.png" alt="telegram" />
-            </a>
-            <a
-              href="https://www.instagram.com/alpha_vista_rus/"
+            <Link
+              className={style.socialLink}
+              href="https://t.me/alpha_vista"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/inst.png" alt="instagram" />
-            </a>
+              <img src="/tg.webp" alt="telegram" />
+              для связи
+            </Link>
+            <Link
+              className={style.socialLink}
+              href="https://t.me/Alpha_Vistaa"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="/tg.webp" alt="telegram" />
+              канал
+            </Link>
           </div>
           <a href="#" className={style.policy}>
             Политика обработки персональных данных

@@ -1,7 +1,8 @@
 <?php
 header('Content-Type: application/json');
 
-$uploaddir = __DIR__ . '/uploads/';
+$uploaddir = __DIR__ . '/../uploads/';
+
 
 if (!file_exists($uploaddir)) {
     mkdir($uploaddir, 0777, true);

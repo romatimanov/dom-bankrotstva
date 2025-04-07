@@ -1,36 +1,34 @@
-'use client'
+import { ClientAboutPage } from 'app/components/about/clientAboutPage'
 
-import { Info } from 'app/components/about/info'
-import { Team } from 'app/components/about/team'
-import { Us } from 'app/components/about/us'
-import { Contacts } from 'app/components/home/contacts'
-import Modal from 'app/components/modal'
-import ModalSuccess from 'app/components/modalSuccess'
-import { Review } from 'app/components/review'
-import Breadcrumbs from 'app/ui/breadcrumbs'
-import { useState } from 'react'
+export const metadata = {
+  title: '20 лет защищаем права клиентов в самых сложных ситуациях',
+  description: 'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов',
+  openGraph: {
+    title: '20 лет защищаем права клиентов в самых сложных ситуациях',
+    description: 'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов',
+    url: 'localhost:3000/',
+    type: 'website',
+    images: [
+      {
+        url: 'localhost:3000/logo.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Дом Банкротства'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '20 лет защищаем права клиентов в самых сложных ситуациях',
+    description: 'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов',
+    images: ['ocalhost:3000/logo.webp']
+  }
+}
 
 export default function About() {
-  const [isOpenFormModal, setIsOpenFormModal] = useState(false)
-  const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false)
   return (
     <>
-      <Info />
-      <Breadcrumbs />
-      <Us setIsOpen={setIsOpenFormModal} />
-      <Team />
-      <Review btn />
-      <Contacts />
-      <Modal
-        isOpen={isOpenFormModal}
-        onClose={() => setIsOpenFormModal(false)}
-        onSuccess={() => {
-          setIsOpenFormModal(false)
-          setIsOpenSuccessModal(true)
-        }}
-      />
-
-      <ModalSuccess isOpen={isOpenSuccessModal} onClose={() => setIsOpenSuccessModal(false)} />
+      <ClientAboutPage />
     </>
   )
 }

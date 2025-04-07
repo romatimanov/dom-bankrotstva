@@ -8,13 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user === ADMIN_USER && password_verify($pass, ADMIN_PASS_HASH)) {
         $_SESSION['is_admin'] = true;
-        header('Location: /admin.php');
+        header('Location: /admin');
         exit;
     } else {
         $error = 'Неверный логин или пароль';
     }
 }
-?>
 ?>
 
 <!DOCTYPE html>

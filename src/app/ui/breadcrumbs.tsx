@@ -21,54 +21,30 @@ export default function Breadcrumbs({ articleTitle }: Props) {
           Главная
         </Link>
 
-        {segments.map((segment, i) => {
-          if (segment === 'article' && articleTitle) {
-            return (
-              <span key="news">
-                <span className={styles.separator}> / </span>
-                <Link href="/news" className={styles.link}>
-                  Новости
-                </Link>
-                <span className={styles.separator}> / </span>
-                <span className={styles.link}>{articleTitle}</span>
-              </span>
-            )
-          }
+        {segments[0] === 'article' && articleTitle ? (
+          <>
+            <span className={styles.separator}> / </span>
+            <Link href="/news" className={styles.link}>
+              Новости
+            </Link>
+            <span className={styles.separator}> / </span>
+            <span className={styles.link}>{articleTitle}</span>
+          </>
+        ) : (
+          segments.map((segment, i) => {
+            const href = '/' + segments.slice(0, i + 1).join('/')
+            const label = decodeURIComponent(segment)
 
-          if (segment === 'news') {
             return (
-              <span key="news">
+              <span key={href}>
                 <span className={styles.separator}> / </span>
-                <Link href="/news" className={styles.link}>
-                  Новости
-                </Link>
-              </span>
-            )
-          }
-
-          if (segment === 'about') {
-            return (
-              <span key="about">
-                <span className={styles.separator}> / </span>
-                <Link href="/about" className={styles.link}>
-                  О компании
+                <Link href={href} className={styles.link}>
+                  {label === 'news' ? 'Новости' : label === 'about' ? 'О компании' : label}
                 </Link>
               </span>
             )
-          }
-
-          const href = '/' + segments.slice(0, i + 1).join('/')
-          const label = decodeURIComponent(segment)
-
-          return (
-            <span key={href}>
-              <span className={styles.separator}> / </span>
-              <Link href={href} className={styles.link}>
-                {label}
-              </Link>
-            </span>
-          )
-        })}
+          })
+        )}
       </nav>
     </div>
   )

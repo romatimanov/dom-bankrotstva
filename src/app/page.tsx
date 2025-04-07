@@ -1,40 +1,34 @@
-'use client'
+import { ClientPage } from './components/clientPage'
 
-import { useState } from 'react'
-import Modal from './components/modal'
-import ModalSuccess from './components/modalSuccess'
-import { About } from './components/home/about'
-import { Steps } from './components/home/steps'
-import { Choice } from './components/home/choice'
-import { Review } from './components/review'
-import { Qestions } from './components/home/qestions'
-import { Asnwer } from './components/asnwer'
-import { Contacts } from './components/home/contacts'
+export const metadata = {
+  title: 'Банкротство физических лиц под ключ',
+  description: 'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов',
+  openGraph: {
+    title: 'Банкротство физических лиц под ключ',
+    description: 'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов',
+    url: 'ocalhost:3000',
+    type: 'website',
+    images: [
+      {
+        url: 'ocalhost:3000logo.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Дом Банкротства'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Банкротство физических лиц под ключ',
+    description: 'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов',
+    images: ['ocalhost:3000logo.webp']
+  }
+}
 
 export default function Home() {
-  const [isOpenFormModal, setIsOpenFormModal] = useState(false)
-  const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false)
-
   return (
     <>
-      <About setIsOpen={setIsOpenFormModal} />
-      <Steps setIsOpen={setIsOpenFormModal} />
-      <Choice setIsOpen={setIsOpenFormModal} />
-      <Review />
-      <Qestions />
-      <Asnwer />
-      <Contacts />
-
-      <Modal
-        isOpen={isOpenFormModal}
-        onClose={() => setIsOpenFormModal(false)}
-        onSuccess={() => {
-          setIsOpenFormModal(false)
-          setIsOpenSuccessModal(true)
-        }}
-      />
-
-      <ModalSuccess isOpen={isOpenSuccessModal} onClose={() => setIsOpenSuccessModal(false)} />
+      <ClientPage />
     </>
   )
 }

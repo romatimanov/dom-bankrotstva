@@ -10,20 +10,6 @@ export function About({ setIsOpen }: ModalProps) {
 
   useEffect(() => {
     document.title = 'Главная'
-
-    const setMeta = (name: string, content: string) => {
-      let tag = document.querySelector(`meta[name="${name}"]`) || document.createElement('meta')
-      tag.setAttribute('name', name)
-      tag.setAttribute('content', content)
-      if (!tag.parentElement) document.head.appendChild(tag)
-    }
-
-    setMeta('title', 'Банкротство физических лиц под ключ')
-    setMeta(
-      'description',
-      'Списываем до 100% долгов, защищаем от коллекторов и остановим рост процентов'
-    )
-    setMeta('keywords', 'банкротство, долги, коллекторы')
   }, [])
 
   if (resize === null) return null
@@ -52,13 +38,13 @@ export function About({ setIsOpen }: ModalProps) {
         <div className={`${style.bannerContent} container`}>
           <h2 className={style.bannerTitle}>О НАС ГОВОРЯТ:</h2>
           <div className={style.bannerImg}>
-            <img src="/forbes.png" alt="forbes" />
+            <img src="/forbes.webp" alt="forbes" />
           </div>
           <div className={style.bannerImg}>
-            <img src="/kommersant.png" alt="kommersant" />
+            <img src="/kommersant.webp" alt="kommersant" />
           </div>
           <div className={style.bannerImg}>
-            <img src="/Pravo.png" alt="Pravo" />
+            <img src="/Pravo.webp" alt="Pravo" />
           </div>
         </div>
       </div>

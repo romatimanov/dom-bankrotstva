@@ -10,6 +10,7 @@
 }
 .breadcrumbs {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
   padding: 60px 0 40px 0;

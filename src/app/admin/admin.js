@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     height: 300,
     language: 'ru',
     uploader: {
-      url: '/upload.php',
+      url: '/admin/upload.php',
       insertImageAsBase64URI: false,
       filesVariableName: () => 'file',
       isSuccess: (resp) => resp.success,
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const content = editor.value.trim()
     const tags = document.getElementById('tags').value.trim()
 
-    if (!title || !content || !tags || !category) {
+    if (!title || !content || !tags) {
       alert('Заполните все поля!')
       return
     }
@@ -41,16 +41,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const tempDiv = document.createElement('div')
     tempDiv.innerHTML = content
     const firstImage = tempDiv.querySelector('img')
-    const image_url = firstImage ? firstImage.src : ''
+
+    let image_url = ''
+    if (firstImage) {
+      const src = firstImage.getAttribute('src') || ''
+
+      if (src.startsWith('http://') || src.startsWith('https://')) {
+        image_url = src
+      } else if (src.startsWith('/')) {
+        image_url = `${window.location.origin}${src}`
+      } else {
+        console.warn('⚠️ Невалидный URL изображения:', src)
+      }
+    }
 
     const editId = form.dataset.editId
     const method = editId ? 'PUT' : 'POST'
-    const url = editId ? `/update_article.php?id=${editId}` : '/save_article.php'
+    const url = editId ? `/admin/update_article.php?id=${editId}` : '/admin/save_article.php'
 
     fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content, tags, image_url, category })
+      body: JSON.stringify({ title, content, tags, image_url })
     })
       .then((res) => res.json())
       .then((data) => {
@@ -95,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function loadArticles() {
-    fetch('/get_article.php')
+    fetch('/admin/get_article.php')
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -116,11 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <td class="date">${formatDate(article.created_at)}</td>
               <td>
                 <button class="button-small" onclick="editArticle(${article.id})">
-                <img src="/icon/edit.svg" alt="edit" />
+                <img src="/admin/icon/edit.svg" alt="edit" />
                 </button>
                 <button class="button-small" onclick="deleteArticle(${
                   article.id
-                })">  <img src="/icon/delete.svg" alt="edit" /></button>
+                })">  <img src="/admin/icon/delete.svg" alt="edit" /></button>
               </td>
             `
             tbody.appendChild(tr)
@@ -155,13 +167,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.editArticle = function (id) {
-    fetch(`/get_article.php?id=${id}`)
+    fetch(`/admin/get_article.php?id=${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
           document.getElementById('create-article-link').click()
           document.getElementById('title').value = data.data.title
-          document.getElementById('category').value = data.data.category
           document.getElementById('tags').value = data.data.tags
           editor.value = data.data.content
           form.dataset.editId = id
@@ -173,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.deleteArticle = function (id) {
     if (confirm('Удалить статью?')) {
-      fetch('/delete_article.php', {
+      fetch('/admin/delete_article.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

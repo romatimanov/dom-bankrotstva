@@ -1,8 +1,7 @@
 'use client'
 
-import { useAddLikeMutation } from 'app/api/articlesApi'
+import { useAddLikeMutation, useGetArticlesQuery } from 'app/api/articlesApi'
 import style from 'app/styles/ui/newsCard.module.css'
-import { formatTitleToUrl } from 'app/utils/formatUrl'
 import { useRouter } from 'next/navigation'
 
 type NewsCardProps = {
@@ -14,16 +13,24 @@ type NewsCardProps = {
   date: string
   likes: number
   views: number
+  search?: boolean
+  onClick?: () => void
 }
 
-export function NewsCard({ id, img, title, tags, date, likes, views }: NewsCardProps) {
+export function NewsCard({
+  id,
+  img,
+  title,
+  tags,
+  date,
+  likes,
+  views,
+  search,
+  onClick
+}: NewsCardProps) {
   const router = useRouter()
   const [addLike] = useAddLikeMutation()
-
-  const handleClick = () => {
-    const formatted = formatTitleToUrl(title)
-    router.push(`/article?title=${formatted}`)
-  }
+  const { refetch } = useGetArticlesQuery()
 
   const handleLikeClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -33,8 +40,7 @@ export function NewsCard({ id, img, title, tags, date, likes, views }: NewsCardP
 
     try {
       await addLike(id.toString())
-      console.log('like added')
-
+      refetch()
       localStorage.setItem(`liked-${id}`, 'true')
     } catch (err) {
       console.error('Ошибка при лайке', err)
@@ -42,10 +48,18 @@ export function NewsCard({ id, img, title, tags, date, likes, views }: NewsCardP
   }
 
   return (
-    <div onClick={handleClick} className={style.newsCard}>
+    <div onClick={onClick} className={style.newsCard}>
       <div className={style.textGroup}>
-        <span className={style.tags}>{tags}</span>
-        <h2 className={style.title}>{title}</h2>
+        <div className={style.tagsGroup}>
+          <span className={style.tags}>{tags}</span>
+          {search && (
+            <button onClick={onClick} className={style.buttonPost}>
+              Читать статью
+              <img src="/icon/post-arrow.svg" alt="arrow" />
+            </button>
+          )}
+        </div>
+        <h2 className={`${style.title} ${search ? style.postTitle : ''}`}>{title}</h2>
       </div>
       <div className={style.textGroup}>
         <img className={style.image} src={img} alt="picture" />

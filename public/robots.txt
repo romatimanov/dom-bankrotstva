@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dom-bankrotstva.vercel.app/sitemap.xml
+Sitemap: https://dombankrotstva.ru/sitemap.xml

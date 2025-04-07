@@ -99,7 +99,7 @@ export function Asnwer() {
             </p>
           </form>
           <div className={style.img}>
-            <img src="/answer.png" alt="answer" />
+            <img className={style.answerImg} src="/answer.webp" alt="answer" />
           </div>
         </div>
       </div>
