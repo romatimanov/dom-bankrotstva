@@ -2,8 +2,8 @@
 import { pool } from 'app/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params
+export async function POST(req: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params
 
   if (!id) {
     return NextResponse.json({ success: false, error: 'Отсутствует ID' }, { status: 400 })
@@ -16,12 +16,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       return NextResponse.json({ success: false, error: 'Статья не найдена' }, { status: 404 })
     }
 
-    const currentViews = rows[0].likes
-    const newLikes = currentViews + 1
+    const currentLikes = rows[0].likes
+    const newLikes = currentLikes + 1
 
     await pool.execute('UPDATE articles SET likes = ? WHERE id = ?', [newLikes, id])
 
-    return NextResponse.json({ success: true, views: newLikes })
+    return NextResponse.json({ success: true, likes: newLikes })
   } catch (error) {
     return NextResponse.json(
       { success: false, error: 'Ошибка запроса: ' + String(error) },
