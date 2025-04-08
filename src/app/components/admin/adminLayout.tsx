@@ -81,21 +81,26 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
         metadescription,
         image_url: imageUrl
       }).unwrap()
-
+      console.log('Create article data:', {
+        title,
+        content,
+        tags,
+        image_url: imageUrl,
+        metakey,
+        metadescription
+      })
       if (res.success || res.message) {
-        showModal('Статья сохранена', () => {
-          refetchArticles()
-          setTitle('')
-          setTags('')
-          setKeys('')
-          setDescription('')
-          setContent('')
-          setImageUrl('')
-          if (editorRef.current) {
-            editorRef.current.value = ''
-          }
-          setActiveTab('list')
-        })
+        refetchArticles()
+        setTitle('')
+        setTags('')
+        setKeys('')
+        setDescription('')
+        setContent('')
+        setImageUrl('')
+        if (editorRef.current) {
+          editorRef.current.value = ''
+        }
+        setActiveTab('list')
       } else {
         showModal('Ошибка: ' + res.error, () => {})
       }

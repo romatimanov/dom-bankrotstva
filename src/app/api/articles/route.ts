@@ -90,6 +90,8 @@ export async function POST(req: NextRequest) {
       metadescription = ''
     } = await req.json()
 
+    console.log('API received image_url:', image_url)
+
     if (!title || !content || !tags) {
       return NextResponse.json(
         { success: false, error: 'Заголовок, текст и теги обязательны' },
