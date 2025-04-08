@@ -1,14 +1,15 @@
-import { Metadata } from 'next'
 import { pool } from 'app/lib/db'
 import { Article } from 'app/interfaces/articles'
 import { Post } from 'app/components/article/post'
+import { Metadata } from 'next'
 
-type PageProps = {
-  params: { slug: string }
-}
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const decodedSlug = decodeURIComponent(params.slug)
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slugpage: string }>
+}): Promise<Metadata> {
+  const { slugpage } = await params
+  const decodedSlug = decodeURIComponent(slugpage)
 
   const [rows] = await pool.query<Article[]>(
     'SELECT title, metakey, metadescription FROM articles WHERE slug = ?',
@@ -36,8 +37,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function NewsPage({ params }: PageProps) {
-  const decodedSlug = decodeURIComponent(params.slug)
+export default async function NewsPage({ params }: { params: Promise<{ slugpage: string }> }) {
+  const { slugpage } = await params
+  const decodedSlug = decodeURIComponent(slugpage)
 
   const [rows] = await pool.query<Article[]>('SELECT * FROM articles WHERE slug = ?', [decodedSlug])
 
