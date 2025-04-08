@@ -41,7 +41,7 @@ export function Footer() {
           <div className={style.social}>
             <Link
               className={style.socialLink}
-              href="https://t.me/alpha_vista"
+              href="https://t.me/Alpha_Vistaa"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -50,7 +50,7 @@ export function Footer() {
             </Link>
             <Link
               className={style.socialLink}
-              href="https://t.me/Alpha_Vistaa"
+              href="https://t.me/alpha_vista"
               target="_blank"
               rel="noopener noreferrer"
             >

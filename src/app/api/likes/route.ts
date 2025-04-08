@@ -1,20 +1,16 @@
+// app/api/likes/route.ts
 import { pool } from 'app/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const id = body.id
+  const { id } = await req.json()
 
-  if (!id || isNaN(Number(id))) {
-    return NextResponse.json(
-      { success: false, error: 'Отсутствует или неверный ID' },
-      { status: 400 }
-    )
+  if (!id) {
+    return NextResponse.json({ success: false, error: 'ID не передан' }, { status: 400 })
   }
 
   try {
     const [rows]: any = await pool.execute('SELECT likes FROM articles WHERE id = ?', [id])
-
     if (rows.length === 0) {
       return NextResponse.json({ success: false, error: 'Статья не найдена' }, { status: 404 })
     }

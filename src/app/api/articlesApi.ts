@@ -16,7 +16,7 @@ export const articlesApi = createApi({
 
     addLike: builder.mutation<any, { id: number }>({
       query: ({ id }) => ({
-        url: `likes`,
+        url: 'likes',
         method: 'POST',
         body: { id }
       })
