@@ -16,7 +16,7 @@ export const articlesApi = createApi({
 
     addLike: builder.mutation<any, string>({
       query: (id) => ({
-        url: `likes?id=${id}`,
+        url: `likes/${id}`,
         method: 'POST'
       })
     }),
@@ -26,6 +26,30 @@ export const articlesApi = createApi({
         url: `views/${id}`,
         method: 'POST'
       })
+    }),
+
+    createArticle: builder.mutation<any, Partial<any>>({
+      query: (article) => ({
+        url: 'articles',
+        method: 'POST',
+        body: article
+      })
+    }),
+
+    updateArticle: builder.mutation<any, { id: number; data: Partial<any> }>({
+      query: ({ id, data }) => ({
+        url: `articles/${id}`,
+        method: 'PUT',
+        body: data
+      })
+    }),
+
+    deleteArticle: builder.mutation<any, number>({
+      query: (id) => ({
+        url: 'articles',
+        method: 'DELETE',
+        body: { id }
+      })
     })
   })
 })
@@ -34,5 +58,8 @@ export const {
   useGetArticlesQuery,
   useGetArticleBySlugQuery,
   useAddLikeMutation,
-  useAddViewMutation
+  useAddViewMutation,
+  useCreateArticleMutation,
+  useUpdateArticleMutation,
+  useDeleteArticleMutation
 } = articlesApi

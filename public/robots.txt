@@ -1,4 +1,9 @@
+# *
 User-agent: *
 Allow: /
 
-Sitemap: https://dombankrotstva.ru/sitemap.xml
+# Host
+Host: https://dombankrot.com
+
+# Sitemaps
+Sitemap: https://dombankrot.com/sitemap.xml

@@ -1,8 +1,0 @@
-RewriteEngine On
-
-# Не обрабатывать физические файлы и папки
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# Поддержка URL: /article/slug → /article/index.html?slug=slug
-RewriteRule ^article/([^/]+)$ /article/index.html?slug=$1 [L,QSA]

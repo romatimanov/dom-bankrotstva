@@ -13,6 +13,8 @@ import { ModalProps } from 'app/type/modal'
 import { renderPagination } from '../pagination'
 import { ButtonBg } from 'app/ui/buttonBg'
 
+const tags = ['#Банкротство', '#Полное списание долгов', '#Судебная практика', '#Защита прав']
+
 export function Articles({ setIsOpen }: ModalProps) {
   const [activeTag, setActiveTag] = useState<string | null>(null)
   const [search, setSearch] = useState<string>('')
@@ -20,10 +22,8 @@ export function Articles({ setIsOpen }: ModalProps) {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const { data: articles = [], isLoading } = useGetArticlesQuery()
   const router = useRouter()
-  const tags = ['#Банкротство', '#Полное списание долгов', '#Судебная практика', '#Защита прав']
   const perPage = searchQuery || activeTag ? 3 : 8
   const [randomNews, setRandomNews] = useState<any | null>(null)
-
   useEffect(() => {
     if (articles.length > 0) {
       const index = Math.floor(Math.random() * articles.length)

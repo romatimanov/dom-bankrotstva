@@ -27,8 +27,8 @@ export async function generateMetadata({
 
   return {
     title: article.title,
-    description: article.metadescription, // 👈 поправь тут если поле называется так
-    keywords: article.metakey, // 👈 и здесь
+    description: article.metadescription,
+    keywords: article.metakey,
     openGraph: {
       title: article.title,
       description: article.metadescription,

@@ -1,20 +1,13 @@
 import './globals.css'
-import { Header } from './components/header'
-import { Footer } from './components/footer'
 import { Providers } from './providers/provider'
+import LayoutWrapper from './components/layoutWrapperClient'
 
-export default function RootLayout({
-  children
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
         <Providers>
-          <Header />
-          {children}
-          <Footer />
+          <LayoutWrapper>{children}</LayoutWrapper>
         </Providers>
         <div id="modal-root" />
       </body>

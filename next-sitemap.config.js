@@ -1,6 +1,18 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'localhost:3000',
+  siteUrl: 'https://dombankrot.com',
   generateRobotsTxt: true,
-  outDir: 'out'
+  changefreq: 'weekly',
+  priority: 0.7,
+  outDir: './public',
+  sitemapSize: 5000,
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: '*',
+        allow: '/'
+      }
+    ],
+    additionalSitemaps: ['https://dombankrot.com/sitemap.xml']
+  }
 }

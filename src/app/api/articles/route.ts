@@ -1,7 +1,9 @@
-// articles/route.ts
+// src/app/api/articles/route.ts
 import { pool } from 'app/lib/db'
 import { RowDataPacket } from 'mysql2'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { writeFile } from 'fs/promises'
+import path from 'path'
 
 interface Article extends RowDataPacket {
   id: number
@@ -13,6 +15,15 @@ interface Article extends RowDataPacket {
   views: number
   tags: string
   created_at: string
+}
+
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^Ѐ-ӿ\w\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
 }
 
 export async function GET(req: Request) {
@@ -65,5 +76,89 @@ export async function GET(req: Request) {
     return NextResponse.json({ success: true, data: articles })
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Ошибка при получении: ' + String(error) })
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const {
+      title,
+      content,
+      tags,
+      image_url = '',
+      metakey = '',
+      metadescription = ''
+    } = await req.json()
+
+    if (!title || !content || !tags) {
+      return NextResponse.json(
+        { success: false, error: 'Заголовок, текст и теги обязательны' },
+        { status: 400 }
+      )
+    }
+
+    const baseSlug = slugify(title)
+    let slug = baseSlug
+    let suffix = 1
+
+    while (true) {
+      const [rows] = await pool.query('SELECT COUNT(*) AS count FROM articles WHERE slug = ?', [
+        slug
+      ])
+      const count = (rows as RowDataPacket[])[0].count
+      if (count === 0) break
+      slug = `${baseSlug}-${suffix++}`
+    }
+
+    await pool.query(
+      'INSERT INTO articles (title, content, image_url, tags, slug, metakey, metadescription) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [title, content, image_url, tags, slug, metakey, metadescription]
+    )
+
+    return NextResponse.json({ success: true, message: 'Статья сохранена', slug })
+  } catch (error) {
+    return NextResponse.json({ success: false, error: 'Ошибка при сохранении: ' + String(error) })
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get('id')
+
+  if (!id) {
+    return NextResponse.json({ success: false, error: 'Не указан ID' }, { status: 400 })
+  }
+
+  try {
+    const { title, content, tags, image_url } = await req.json()
+
+    if (!title || !content || !tags || !image_url) {
+      return NextResponse.json({ success: false, error: 'Все поля обязательны' }, { status: 400 })
+    }
+
+    const slug = slugify(title)
+
+    const [result] = await pool.query(
+      'UPDATE articles SET title = ?, slug = ?, content = ?, tags = ?, image_url = ? WHERE id = ?',
+      [title, slug, content, tags, image_url, Number(id)]
+    )
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    return NextResponse.json({ success: false, error: 'Ошибка при обновлении: ' + String(error) })
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id } = await req.json()
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'ID не передан' }, { status: 400 })
+    }
+
+    await pool.query('DELETE FROM articles WHERE id = ?', [Number(id)])
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    return NextResponse.json({ success: false, error: 'Ошибка при удалении: ' + String(error) })
   }
 }

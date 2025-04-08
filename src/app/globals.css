@@ -219,6 +219,9 @@ button {
   align-items: center;
   justify-content: space-between;
 }
+.jodit-workplace {
+  min-height: 500px !important;
+}
 
 @media (max-width: 768px) {
   .container {
@@ -235,5 +238,8 @@ button {
   }
   .global-title--add {
     padding: 0;
+  }
+  .jodit-workplace {
+    min-height: 300px !important;
   }
 }

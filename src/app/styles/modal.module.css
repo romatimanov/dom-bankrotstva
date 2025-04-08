@@ -160,6 +160,25 @@
   justify-content: center;
   height: 400px;
 }
+.textAdmin {
+  font-size: clamp(14px, 3vw, 18px);
+  line-height: clamp(20px, 3vw, 28px);
+  color: #fff;
+  z-index: 100;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  justify-content: center;
+}
+.success {
+  background-color: green !important;
+  color: #fff !important;
+  border: none !important;
+}
 @media (max-width: 768px) {
   .modalSuccess {
     height: auto;
