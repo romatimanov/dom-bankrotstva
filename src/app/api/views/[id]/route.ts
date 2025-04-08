@@ -1,9 +1,9 @@
-// app/api/views/[id]/route.ts
 import { pool } from 'app/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params
+export async function POST(req: NextRequest) {
+  const url = req.nextUrl
+  const id = url.pathname.split('/').pop()
 
   if (!id) {
     return NextResponse.json({ success: false, error: 'Отсутствует ID' }, { status: 400 })
