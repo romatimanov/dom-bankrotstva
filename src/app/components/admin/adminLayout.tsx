@@ -222,10 +222,10 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
                       if (data.success && data.url) {
                         setImageUrl(data.url)
                       } else {
-                        showModal('Ошибка загрузки изображения', () => {})
+                        alert('Ошибка запроса загрузки')
                       }
                     } catch (err) {
-                      showModal('Ошибка запроса загрузки', () => {})
+                      alert('Ошибка запроса загрузки')
                     } finally {
                       setIsUploading(false)
                     }
