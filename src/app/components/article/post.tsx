@@ -28,7 +28,7 @@ export function Post({ article }: PostProps) {
 
   useEffect(() => {
     if (!article?.id) return
-    addView(String(article.id))
+    addView({ id: article.id })
     refetchArticles()
   }, [article?.id])
 

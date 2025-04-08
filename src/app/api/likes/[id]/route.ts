@@ -2,11 +2,14 @@ import { pool } from 'app/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  const url = req.nextUrl
-  const id = url.pathname.split('/').pop()
+  const body = await req.json()
+  const id = body.id
 
-  if (!id) {
-    return NextResponse.json({ success: false, error: 'Отсутствует ID' }, { status: 400 })
+  if (!id || isNaN(Number(id))) {
+    return NextResponse.json(
+      { success: false, error: 'Отсутствует или неверный ID' },
+      { status: 400 }
+    )
   }
 
   try {

@@ -2,14 +2,14 @@ import { pool } from 'app/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  const url = req.nextUrl
-  const id = url.pathname.split('/').pop()
-
-  if (!id) {
-    return NextResponse.json({ success: false, error: 'Отсутствует ID' }, { status: 400 })
-  }
-
   try {
+    const body = await req.json()
+    const { id } = body
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Отсутствует ID' }, { status: 400 })
+    }
+
     const [rows]: any = await pool.execute('SELECT views FROM articles WHERE id = ?', [id])
 
     if (rows.length === 0) {

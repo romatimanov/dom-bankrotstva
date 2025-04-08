@@ -28,7 +28,6 @@ export function NewsCard({
   search,
   onClick
 }: NewsCardProps) {
-  const router = useRouter()
   const [addLike] = useAddLikeMutation()
   const { refetch } = useGetArticlesQuery()
 
@@ -39,7 +38,7 @@ export function NewsCard({
     if (alreadyLiked) return
 
     try {
-      await addLike(id.toString())
+      await addLike({ id })
       refetch()
       localStorage.setItem(`liked-${id}`, 'true')
     } catch (err) {

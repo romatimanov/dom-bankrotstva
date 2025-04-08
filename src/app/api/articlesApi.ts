@@ -14,17 +14,19 @@ export const articlesApi = createApi({
       transformResponse: (response: { success: boolean; data: any }) => response.data
     }),
 
-    addLike: builder.mutation<any, string>({
-      query: (id) => ({
-        url: `likes/${id}`,
-        method: 'POST'
+    addLike: builder.mutation<any, { id: number }>({
+      query: ({ id }) => ({
+        url: `likes`,
+        method: 'POST',
+        body: { id }
       })
     }),
 
-    addView: builder.mutation<any, string>({
-      query: (id) => ({
-        url: `views/${id}`,
-        method: 'POST'
+    addView: builder.mutation<any, { id: number }>({
+      query: ({ id }) => ({
+        url: `views`,
+        method: 'POST',
+        body: { id }
       })
     }),
 
