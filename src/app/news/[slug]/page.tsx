@@ -1,7 +1,7 @@
-import { Article } from 'app/interfaces/articles'
-import { Post } from 'app/components/article/post'
 import { Metadata } from 'next'
 import { pool } from 'app/lib/db'
+import { Article } from 'app/interfaces/articles'
+import { Post } from 'app/components/article/post'
 
 type PageProps = {
   params: { slug: string }
