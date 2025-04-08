@@ -41,6 +41,7 @@ export function Articles({ setIsOpen }: ModalProps) {
   }
   const handleClick = (slug: string) => {
     router.push(`/news/${slug}`)
+    console.log(slug)
   }
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +125,7 @@ export function Articles({ setIsOpen }: ModalProps) {
             </div>
 
             {articles.length > 0 && !searchQuery && !activeTag && randomNews && (
-              <div className={style.articleInfo} onClick={() => handleClick(randomNews.title)}>
+              <div className={style.articleInfo} onClick={() => handleClick(randomNews.slug)}>
                 <img
                   className={style.image}
                   src={randomNews.image_url ? randomNews.image_url : '/article.webp'}
@@ -216,7 +217,7 @@ export function Articles({ setIsOpen }: ModalProps) {
                     <li
                       className={style.asideItem}
                       key={article.id}
-                      onClick={() => handleClick(article.title)}
+                      onClick={() => handleClick(article.slug)}
                     >
                       {article.title}
                     </li>
