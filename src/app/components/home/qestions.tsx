@@ -22,13 +22,17 @@ export function Qestions() {
               </Accordion.Trigger>
             </Accordion.Header>
             <Accordion.Content className={style.AccordionContent}>
-              <div className={style.AccordionContentText}>Ответ на второй вопрос</div>
+              <div className={style.AccordionContentText}>
+                Нет, не все. Суд может списать только те долги, которые признают невозможными к
+                погашению. Алименты, штрафы, возмещение вреда жизни/здоровью и некоторые другие
+                обязательства не списываются.
+              </div>
             </Accordion.Content>
           </Accordion.Item>
           <Accordion.Item value="item-2" className={style.AccordionItem}>
             <Accordion.Header className={style.AccordionHeader}>
               <Accordion.Trigger className={style.AccordionTrigger}>
-                Правда ли, что спишут все кредиты?
+                Что будет с моим имуществом?
                 <ChevronDownIcon className={style.AccordionChevron} />
               </Accordion.Trigger>
             </Accordion.Header>
@@ -49,7 +53,11 @@ export function Qestions() {
               </Accordion.Trigger>
             </Accordion.Header>
             <Accordion.Content className={style.AccordionContent}>
-              <div className={style.AccordionContentText}>Ответ на второй вопрос</div>
+              <div className={style.AccordionContentText}>
+                Да, но не сразу. После завершения банкротства (обычно через 5 лет с момента списания
+                долгов) банки смогут рассматривать вашу заявку. Однако условия будут жестче, а
+                процентные ставки — выше.
+              </div>
             </Accordion.Content>
           </Accordion.Item>
           <Accordion.Item value="item-4" className={style.AccordionItem}>
@@ -60,7 +68,10 @@ export function Qestions() {
               </Accordion.Trigger>
             </Accordion.Header>
             <Accordion.Content className={style.AccordionContent}>
-              <div className={style.AccordionContentText}>Ответ на второй вопрос</div>
+              <div className={style.AccordionContentText}>
+                Да. Банкротство не запрещает работать, но есть нюансы: для физлиц: ограничений нет;
+                для ИП/бизнеса: возможны ограничения на руководящие должности (на 1–3 года).
+              </div>
             </Accordion.Content>
           </Accordion.Item>
           <Accordion.Item value="item-5" className={style.AccordionItem}>
@@ -71,7 +82,13 @@ export function Qestions() {
               </Accordion.Trigger>
             </Accordion.Header>
             <Accordion.Content className={style.AccordionContent}>
-              <div className={style.AccordionContentText}>Ответ на второй вопрос</div>
+              <div className={style.AccordionContentText}>
+                При банкротстве с ипотекой квартира может быть продана на торгах, если она не
+                является единственным жильём или превышает нормы по площади/стоимости в регионе, а
+                вырученные средства пойдут на погашение долга, но если жильё единственное и
+                соответствует установленным критериям, его могут сохранить, хотя банк вправе
+                требовать изменения условий платежей или оспаривать решение суда.
+              </div>
             </Accordion.Content>
           </Accordion.Item>
         </Accordion.Root>
