@@ -30,6 +30,7 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
   const [deleteArticle] = useDeleteArticleMutation()
   const [createArticle] = useCreateArticleMutation()
   const router = useRouter()
+  const [isUploading, setIsUploading] = useState(false)
 
   const totalPages = Math.ceil(articles.length / perPage)
   const paginatedArticles = articles.slice((currentPage - 1) * perPage, currentPage * perPage)
@@ -72,6 +73,11 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
       return
     }
 
+    if (isUploading) {
+      showModal('Пожалуйста, дождитесь загрузки изображения', () => {})
+      return
+    }
+
     try {
       const res = await createArticle({
         title,
@@ -81,14 +87,7 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
         metadescription,
         image_url: imageUrl
       }).unwrap()
-      console.log('Create article data:', {
-        title,
-        content,
-        tags,
-        image_url: imageUrl,
-        metakey,
-        metadescription
-      })
+
       if (res.success || res.message) {
         refetchArticles()
         setTitle('')
@@ -207,21 +206,28 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
                     const file = e.target.files?.[0]
                     if (!file) return
 
+                    setIsUploading(true)
+
                     const formData = new FormData()
                     formData.append('files', file)
 
-                    const res = await fetch('/api/upload', {
-                      method: 'POST',
-                      body: formData
-                    })
+                    try {
+                      const res = await fetch('/api/upload/', {
+                        method: 'POST',
+                        body: formData
+                      })
 
-                    const data = await res.json()
+                      const data = await res.json()
 
-                    if (data.success && data.url) {
-                      setImageUrl(data.url)
-                      showModal('Картинка загружена', () => {})
-                    } else {
-                      showModal('Ошибка загрузки изображения', () => {})
+                      if (data.success && data.url) {
+                        setImageUrl(data.url)
+                      } else {
+                        showModal('Ошибка загрузки изображения', () => {})
+                      }
+                    } catch (err) {
+                      showModal('Ошибка запроса загрузки', () => {})
+                    } finally {
+                      setIsUploading(false)
                     }
                   }}
                 />
@@ -244,8 +250,8 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
                 />
 
                 <br />
-                <button type="submit" className={style.button}>
-                  {title ? 'Сохранить изменения' : 'Сохранить'}
+                <button type="submit" className={style.button} disabled={isUploading}>
+                  {isUploading ? 'Загрузка...' : title ? 'Сохранить изменения' : 'Сохранить'}
                 </button>
               </form>
             </section>
