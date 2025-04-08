@@ -51,9 +51,8 @@ export function Post({ article }: PostProps) {
     setParsedContent(doc.body.innerHTML)
   }, [article])
 
-  const handleClick = (title: string) => {
-    const formatted = formatTitleToUrl(title)
-    router.push(`/article/${formatted}`)
+  const handleClick = (slug: string) => {
+    router.push(`/news/${slug}`)
   }
 
   return (
@@ -106,7 +105,7 @@ export function Post({ article }: PostProps) {
                     <li
                       key={relatedArticle.id}
                       className={style.relatedItem}
-                      onClick={() => handleClick(relatedArticle.title)}
+                      onClick={() => handleClick(relatedArticle.slug)}
                     >
                       <img src="/icon/arrow-news.svg" alt="arrow" />
                       {relatedArticle.title}
@@ -128,7 +127,7 @@ export function Post({ article }: PostProps) {
                     return new Date(a.created_at) >= weekAgo
                   })
                   .map((a) => (
-                    <li key={a.id} className={style.asideItem} onClick={() => handleClick(a.title)}>
+                    <li key={a.id} className={style.asideItem} onClick={() => handleClick(a.slug)}>
                       {a.title}
                     </li>
                   ))}
