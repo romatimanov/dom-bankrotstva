@@ -212,7 +212,7 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
                     formData.append('files', file)
 
                     try {
-                      const res = await fetch('/api/upload/', {
+                      const res = await fetch('/api/upload', {
                         method: 'POST',
                         body: formData
                       })
