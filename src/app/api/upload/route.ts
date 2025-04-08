@@ -1,26 +1,32 @@
-import { writeFile } from 'fs/promises'
-import path from 'path'
-import { NextResponse } from 'next/server'
+// src/app/api/upload/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import cloudinary from 'cloudinary'
 
-export const dynamic = 'force-dynamic'
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+  api_key: process.env.CLOUDINARY_API_KEY!,
+  api_secret: process.env.CLOUDINARY_API_SECRET!
+})
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const formData = await req.formData()
   const file = formData.get('files') as File
 
-  if (!file || typeof file === 'string') {
-    return NextResponse.json({ success: false, error: 'Файл не получен' }, { status: 400 })
+  if (!file) {
+    return NextResponse.json({ success: false, error: 'Нет файла' }, { status: 400 })
   }
 
-  const bytes = await file.arrayBuffer()
-  const buffer = Buffer.from(bytes)
+  const buffer = Buffer.from(await file.arrayBuffer())
+  const base64 = buffer.toString('base64')
+  const dataURI = `data:${file.type};base64,${base64}`
 
-  const fileName = `${Date.now()}-${file.name}`
-  const filePath = path.join(process.cwd(), 'public/uploads', fileName)
+  try {
+    const res = await cloudinary.v2.uploader.upload(dataURI, {
+      folder: 'your-folder'
+    })
 
-  await writeFile(filePath, buffer)
-
-  const fileUrl = `/uploads/${fileName}`
-
-  return NextResponse.json({ success: true, url: fileUrl })
+    return NextResponse.json({ success: true, url: res.secure_url })
+  } catch (err) {
+    return NextResponse.json({ success: false, error: String(err) })
+  }
 }
