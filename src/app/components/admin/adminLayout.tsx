@@ -34,6 +34,7 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
   const router = useRouter()
   const [isUploading, setIsUploading] = useState(false)
   const [articleId, setArticleId] = useState<number | null>(null)
+
   const totalPages = Math.ceil(articles.length / perPage)
   const paginatedArticles = articles.slice((currentPage - 1) * perPage, currentPage * perPage)
 

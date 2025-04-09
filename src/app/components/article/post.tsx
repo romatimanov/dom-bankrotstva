@@ -6,7 +6,6 @@ import style from 'app/styles/article.module.css'
 import Breadcrumbs from 'app/ui/breadcrumbs'
 import { useAddViewMutation, useGetArticlesQuery } from 'app/api/articlesApi'
 import { ButtonBg } from 'app/ui/buttonBg'
-import { formatTitleToUrl } from 'app/utils/formatUrl'
 import { Asnwer } from 'app/components/asnwer'
 import Modal from 'app/components/modal'
 import ModalSuccess from 'app/components/modalSuccess'
@@ -23,13 +22,56 @@ export function Post({ article }: PostProps) {
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false)
   const [headings, setHeadings] = useState<{ text: string; id: string }[]>([])
 
-  const { data: articles = [], refetch: refetchArticles } = useGetArticlesQuery()
+  function sanitizeContent(html: string): string {
+    const div = document.createElement('div')
+    div.innerHTML = html
+
+    div.querySelectorAll('p').forEach((p) => {
+      const isEmpty =
+        p.innerHTML.trim() === '<br>' || p.innerHTML.trim() === '' || p.textContent?.trim() === ''
+      if (isEmpty) {
+        p.remove()
+      }
+    })
+
+    const children = Array.from(div.childNodes)
+    let buffer: HTMLLIElement[] = []
+    let newUl: HTMLUListElement | null = null
+
+    for (let i = 0; i < children.length; i++) {
+      const node = children[i]
+
+      if (node.nodeName === 'UL') {
+        const ul = node as HTMLUListElement
+        const lis = Array.from(ul.querySelectorAll('li'))
+
+        if (!newUl) {
+          newUl = document.createElement('ul')
+        }
+
+        lis.forEach((li) => newUl?.appendChild(li.cloneNode(true)))
+        buffer.push(...lis)
+
+        div.removeChild(ul)
+
+        const next = children[i + 1]
+        if (!next || next.nodeName !== 'UL') {
+          if (newUl) div.insertBefore(newUl, next || null)
+          newUl = null
+          buffer = []
+        }
+      }
+    }
+
+    return div.innerHTML
+  }
+
+  const { data: articles = [] } = useGetArticlesQuery()
   const [addView] = useAddViewMutation()
 
   useEffect(() => {
     if (!article?.id) return
     addView({ id: article.id })
-    refetchArticles()
   }, [article?.id])
 
   useEffect(() => {
@@ -48,7 +90,7 @@ export function Post({ article }: PostProps) {
     })
 
     setHeadings(headingsArray)
-    setParsedContent(doc.body.innerHTML)
+    setParsedContent(sanitizeContent(doc.body.innerHTML))
   }, [article])
 
   const handleClick = (slug: string) => {
@@ -96,9 +138,9 @@ export function Post({ article }: PostProps) {
                 {articles
                   .filter((a) => a.id !== article.id)
                   .filter((a) => {
-                    const currentTags = article.tags?.split(' ').map((tag: string) => tag.trim())
+                    const currentTags = article.tags?.split(' ').map((tag) => tag.trim())
                     const otherTags = a.tags?.split(' ').map((tag: string) => tag.trim())
-                    return currentTags?.some((tag: string) => otherTags?.includes(tag))
+                    return currentTags?.some((tag) => otherTags?.includes(tag))
                   })
                   .slice(0, 5)
                   .map((relatedArticle) => (
