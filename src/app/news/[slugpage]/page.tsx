@@ -32,7 +32,7 @@ export async function generateMetadata({
     openGraph: {
       title: article.title,
       description: article.metadescription,
-      images: ['/images/article-image.jpg']
+      images: ['https://dombankrot.com/logo.webp']
     }
   }
 }
@@ -44,7 +44,7 @@ export default async function NewsPage({ params }: { params: Promise<{ slugpage:
   const [rows] = await pool.query<Article[]>('SELECT * FROM articles WHERE slug = ?', [decodedSlug])
 
   if (rows.length === 0) {
-    return <h1>Статья не найдена по slug</h1>
+    return <h1 className="not-found">Статья не найдена :(</h1>
   }
 
   const article = rows[0]

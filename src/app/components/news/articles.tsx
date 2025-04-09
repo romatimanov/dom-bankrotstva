@@ -72,8 +72,8 @@ export function Articles({ setIsOpen }: ModalProps) {
     currentPage * perPage
   )
 
-  {
-    isLoading && (
+  if (isLoading) {
+    return (
       <div className={style.loaderWrapper}>
         <div className={style.loader}></div>
       </div>

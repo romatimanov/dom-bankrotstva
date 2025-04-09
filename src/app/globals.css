@@ -222,7 +222,10 @@ button {
 .jodit-workplace {
   min-height: 500px !important;
 }
-
+.not-found {
+  padding: 40px 0;
+  text-align: center;
+}
 @media (max-width: 768px) {
   .container {
     padding: 0 15px;
