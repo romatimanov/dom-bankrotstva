@@ -1,9 +1,7 @@
 // src/app/api/articles/route.ts
 import { pool } from 'app/lib/db'
-import { RowDataPacket } from 'mysql2'
+import { RowDataPacket, ResultSetHeader } from 'mysql2'
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile } from 'fs/promises'
-import path from 'path'
 
 interface Article extends RowDataPacket {
   id: number
@@ -124,26 +122,68 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  const { searchParams } = new URL(req.url)
-  const id = searchParams.get('id')
-
-  if (!id) {
-    return NextResponse.json({ success: false, error: 'Не указан ID' }, { status: 400 })
-  }
-
   try {
-    const { title, content, tags, image_url } = await req.json()
+    const { id, title, content, tags, image_url, metakey, metadescription } = await req.json()
 
-    if (!title || !content || !tags || !image_url) {
-      return NextResponse.json({ success: false, error: 'Все поля обязательны' }, { status: 400 })
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Не указан ID' }, { status: 400 })
     }
 
-    const slug = slugify(title)
+    const updatedFields: string[] = []
+    const updatedValues: any[] = []
 
-    const [result] = await pool.query(
-      'UPDATE articles SET title = ?, slug = ?, content = ?, tags = ?, image_url = ? WHERE id = ?',
-      [title, slug, content, tags, image_url, Number(id)]
+    let slug: string | undefined
+
+    if (title) {
+      slug = slugify(title)
+      updatedFields.push('title = ?', 'slug = ?')
+      updatedValues.push(title, slug)
+    }
+
+    if (content) {
+      updatedFields.push('content = ?')
+      updatedValues.push(content)
+    }
+
+    if (tags) {
+      updatedFields.push('tags = ?')
+      updatedValues.push(tags)
+    }
+
+    if (image_url) {
+      updatedFields.push('image_url = ?')
+      updatedValues.push(image_url)
+    }
+
+    if (metakey) {
+      updatedFields.push('metakey = ?')
+      updatedValues.push(metakey)
+    }
+
+    if (metadescription) {
+      updatedFields.push('metadescription = ?')
+      updatedValues.push(metadescription)
+    }
+
+    if (updatedFields.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Нет данных для обновления' },
+        { status: 400 }
+      )
+    }
+
+    const setClause = updatedFields.join(', ')
+
+    updatedValues.push(id)
+
+    const [result] = await pool.query<ResultSetHeader>(
+      `UPDATE articles SET ${setClause} WHERE id = ?`,
+      updatedValues
     )
+
+    if (result.affectedRows === 0) {
+      return NextResponse.json({ success: false, error: 'Статья не найдена' }, { status: 404 })
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {

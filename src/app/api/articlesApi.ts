@@ -40,9 +40,9 @@ export const articlesApi = createApi({
 
     updateArticle: builder.mutation<any, { id: number; data: Partial<any> }>({
       query: ({ id, data }) => ({
-        url: `articles/${id}`,
+        url: `articles`,
         method: 'PUT',
-        body: data
+        body: { id, ...data }
       })
     }),
 

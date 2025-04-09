@@ -7,7 +7,8 @@ import style from 'app/styles/admin.module.css'
 import {
   useCreateArticleMutation,
   useDeleteArticleMutation,
-  useGetArticlesQuery
+  useGetArticlesQuery,
+  useUpdateArticleMutation
 } from 'app/api/articlesApi'
 import { renderPagination } from '../pagination'
 import { formatDate } from 'app/utils/formatedDate'
@@ -29,9 +30,10 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
   const { data: articles = [], refetch: refetchArticles } = useGetArticlesQuery()
   const [deleteArticle] = useDeleteArticleMutation()
   const [createArticle] = useCreateArticleMutation()
+  const [updateArticle] = useUpdateArticleMutation()
   const router = useRouter()
   const [isUploading, setIsUploading] = useState(false)
-
+  const [articleId, setArticleId] = useState<number | null>(null)
   const totalPages = Math.ceil(articles.length / perPage)
   const paginatedArticles = articles.slice((currentPage - 1) * perPage, currentPage * perPage)
 
@@ -79,33 +81,59 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
     }
 
     try {
-      const res = await createArticle({
-        title,
-        content,
-        tags,
-        metakey,
-        metadescription,
-        image_url: imageUrl
-      }).unwrap()
+      if (articleId) {
+        const res = await updateArticle({
+          id: articleId,
+          data: {
+            title,
+            content,
+            tags,
+            metakey,
+            metadescription,
+            image_url: imageUrl
+          }
+        }).unwrap()
 
-      if (res.success || res.message) {
-        refetchArticles()
-        setTitle('')
-        setTags('')
-        setKeys('')
-        setDescription('')
-        setContent('')
-        setImageUrl('')
-        if (editorRef.current) {
-          editorRef.current.value = ''
+        if (res.success || res.message) {
+          refetchArticles()
+          resetForm()
+          setActiveTab('list')
+        } else {
+          showModal('Ошибка: ' + res.error, () => {})
         }
-        setActiveTab('list')
       } else {
-        showModal('Ошибка: ' + res.error, () => {})
+        const res = await createArticle({
+          title,
+          content,
+          tags,
+          metakey,
+          metadescription,
+          image_url: imageUrl
+        }).unwrap()
+
+        if (res.success || res.message) {
+          refetchArticles()
+          resetForm()
+          setActiveTab('list')
+        } else {
+          showModal('Ошибка: ' + res.error, () => {})
+        }
       }
     } catch (err: any) {
       showModal('Ошибка при сохранении: ' + (err?.data?.error || 'Неизвестная'), () => {})
       console.error(err)
+    }
+  }
+
+  const resetForm = () => {
+    setTitle('')
+    setTags('')
+    setKeys('')
+    setDescription('')
+    setContent('')
+    setImageUrl('')
+    if (editorRef.current) {
+      editorRef.current.value = ''
     }
   }
 
@@ -132,6 +160,7 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
     setDescription(article.metadescription || '')
     setContent(article.content)
     setImageUrl(article.image_url)
+    setArticleId(article.id)
     setActiveTab('create')
   }
 
