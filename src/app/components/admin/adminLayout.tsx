@@ -111,6 +111,13 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
           metadescription,
           image_url: imageUrl
         }).unwrap()
+        console.log({
+          title,
+          content,
+          tags,
+          metakey,
+          metadescription
+        })
 
         if (res.success || res.message) {
           refetchArticles()
@@ -133,6 +140,7 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
     setDescription('')
     setContent('')
     setImageUrl('')
+    setArticleId(null)
     if (editorRef.current) {
       editorRef.current.value = ''
     }
@@ -281,7 +289,7 @@ export default function AdminLayout({ placeholder }: { placeholder?: string }) {
 
                 <br />
                 <button type="submit" className={style.button} disabled={isUploading}>
-                  {isUploading ? 'Загрузка...' : title ? 'Сохранить изменения' : 'Сохранить'}
+                  {isUploading ? 'Загрузка...' : articleId ? 'Сохранить изменения' : 'Сохранить'}
                 </button>
               </form>
             </section>
