@@ -5,12 +5,43 @@ import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { ButtonBg } from 'app/ui/buttonBg'
 import ModalSuccess from './modalSuccess'
+import Select, { components } from 'react-select'
+import { SingleValue } from 'react-select'
+import dynamic from 'next/dynamic'
 
+const NoSSRSelect = dynamic(() => import('react-select').then((mod) => mod.default), {
+  ssr: false
+}) as React.ComponentType<any>
+
+type OptionType = { value: string; label: string }
 type FormData = {
   name: string
   email: string
   message: string
+  sum: string
+  answer: string
 }
+const DropdownIndicator = (props: any) => {
+  const { menuIsOpen } = props.selectProps
+  return (
+    <components.DropdownIndicator {...props}>
+      <span
+        style={{
+          display: 'inline-block',
+          transform: menuIsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+          transition: 'transform 0.2s ease'
+        }}
+      >
+        <img src="/select-arrow.png" alt="arrow" />
+      </span>
+    </components.DropdownIndicator>
+  )
+}
+
+const options = [
+  { value: '1', label: 'Да' },
+  { value: '2', label: 'Нет' }
+]
 
 export function Asnwer() {
   const {
@@ -23,10 +54,18 @@ export function Asnwer() {
   const [messageLength, setMessageLength] = useState(0)
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false)
 
+  const [selected, setSelected] = useState<SingleValue<OptionType>>(null)
+
   const onSubmit = async (data: FormData) => {
-    console.log(data)
+    const fullData = {
+      ...data,
+      answer: selected?.label || ''
+    }
+
+    console.log(fullData)
     setIsOpenSuccessModal(true)
     reset()
+    setSelected(null)
     setMessageLength(0)
   }
 
@@ -65,6 +104,70 @@ export function Asnwer() {
                   required: true,
                   pattern: { value: /^\S+@\S+$/i, message: 'Неверный email' }
                 })}
+              />
+            </label>
+
+            <label className={style.formLine}>
+              <p className={`${style.labelText} ${errors.name ? style.labelError : ''}`}>
+                Сумма долга
+              </p>
+              <input
+                type="text"
+                inputMode="numeric"
+                placeholder="Введите числовое значение"
+                className={`${style.input} ${errors.sum ? style.errorInput : ''}`}
+                {...register('sum', {
+                  required: true,
+                  validate: (value) => /^\d+$/.test(value) || 'Введите только цифры'
+                })}
+                onInput={(e) => {
+                  const input = e.target as HTMLInputElement
+                  input.value = input.value.replace(/\D/g, '')
+                }}
+              />
+            </label>
+            <label className={style.formLine}>
+              <p className={`${style.labelText} ${errors.name ? style.labelError : ''}`}>
+                Наличие ипотеки/автокредита
+              </p>
+              <NoSSRSelect
+                options={options}
+                value={selected}
+                onChange={(option: SingleValue<OptionType>) => setSelected(option)}
+                placeholder="Выберите значение из списка"
+                components={{ DropdownIndicator }}
+                styles={{
+                  control: (base: any, state: any) => ({
+                    ...base,
+                    border: '1px solid #E1E0E0',
+                    borderRadius: 1,
+                    boxShadow: 'none',
+                    padding: '1px 12px',
+                    '&:hover': {
+                      borderColor: '#E1E0E0'
+                    }
+                  }),
+                  dropdownIndicator: (base: any) => ({
+                    ...base,
+                    padding: '0 8px'
+                  }),
+                  indicatorSeparator: () => ({ display: 'none' }),
+                  option: (base: any, state: any) => ({
+                    ...base,
+                    backgroundColor: state.isFocused ? '#C53030' : 'white',
+                    color: state.isFocused ? 'white' : 'black',
+                    cursor: 'pointer',
+                    fontSize: '16px'
+                  }),
+                  menu: (base: any) => ({
+                    ...base,
+                    borderRadius: 1,
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    marginTop: '0',
+                    border: '1px solid #E1E0E0'
+                  })
+                }}
               />
             </label>
 
