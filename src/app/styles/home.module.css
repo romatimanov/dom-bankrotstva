@@ -393,6 +393,7 @@
   border-radius: 5px;
   height: 100%;
   object-fit: cover;
+  max-height: 604px;
 }
 /* contact */
 

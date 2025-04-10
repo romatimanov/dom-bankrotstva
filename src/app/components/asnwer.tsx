@@ -181,6 +181,7 @@ export function Asnwer() {
               <textarea
                 placeholder="Расскажите о своей проблеме"
                 maxLength={300}
+                style={{ maxWidth: '580px', maxHeight: '200px' }}
                 className={`${style.input} ${style.textarea} ${
                   errors.message ? style.errorInput : ''
                 }`}
