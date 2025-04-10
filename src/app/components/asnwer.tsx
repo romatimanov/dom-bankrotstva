@@ -142,10 +142,16 @@ export function Asnwer() {
                     border: '1px solid #E1E0E0',
                     borderRadius: 1,
                     boxShadow: 'none',
-                    padding: '1px 12px',
+                    padding: '1px 6px',
+                    cursor: 'pointer',
                     '&:hover': {
                       borderColor: '#E1E0E0'
                     }
+                  }),
+                  placeholder: (base: any) => ({
+                    ...base,
+                    color: 'var(--gray-400)',
+                    fontSize: '15px'
                   }),
                   dropdownIndicator: (base: any) => ({
                     ...base,
