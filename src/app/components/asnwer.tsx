@@ -89,6 +89,7 @@ export function Asnwer() {
                 placeholder="Имя"
                 className={`${style.input} ${errors.name ? style.errorInput : ''}`}
                 {...register('name', { required: true })}
+                style={{ color: '#333' }}
               />
             </label>
 
@@ -104,6 +105,7 @@ export function Asnwer() {
                   required: true,
                   pattern: { value: /^\S+@\S+$/i, message: 'Неверный email' }
                 })}
+                style={{ color: '#333' }}
               />
             </label>
 
@@ -120,6 +122,7 @@ export function Asnwer() {
                   required: true,
                   validate: (value) => /^\d+$/.test(value) || 'Введите только цифры'
                 })}
+                style={{ color: '#333' }}
                 onInput={(e) => {
                   const input = e.target as HTMLInputElement
                   input.value = input.value.replace(/\D/g, '')
@@ -187,7 +190,7 @@ export function Asnwer() {
               <textarea
                 placeholder="Расскажите о своей проблеме"
                 maxLength={300}
-                style={{ maxWidth: '580px', maxHeight: '200px' }}
+                style={{ maxWidth: '580px', maxHeight: '200px', color: '#333' }}
                 className={`${style.input} ${style.textarea} ${
                   errors.message ? style.errorInput : ''
                 }`}
