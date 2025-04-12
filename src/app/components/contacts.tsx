@@ -1,3 +1,5 @@
+'use client'
+
 import style from 'app/styles/home.module.css'
 import { Map } from './map'
 

@@ -6,44 +6,7 @@ import { useRef } from 'react'
 import { SwiperComponent } from './swiper'
 import { Button } from 'app/ui/button'
 import { useResize } from 'app/hook/useResize'
-
-export const reviews = [
-  {
-    title: 'Теперь сплю спокойно!',
-    text: 'Юристы компании помогли мне списать долги, которые я уже считал пожизненным приговором. Всё прошло максимально прозрачно, и теперь я могу спокойно спать. Огромное спасибо за поддержку и грамотное сопровождение!',
-    date: '15 января 2024',
-    sum: '2 350 000 ₽',
-    name: 'Олег В., Москва'
-  },
-  {
-    title: 'Из долговой ямы – к новой жизни!',
-    text: 'Обратилась с юридическим вопросом, и уже на первой консультации стало понятно, что мне действительно помогут. Всё чётко, без лишних обещаний, зато с реальным результатом. Спасибо, что помогли выбраться из долговой ямы!',
-    date: '5 марта 2024',
-    sum: '1 920 000 ₽',
-    name: 'Марина Л., Казань'
-  },
-  {
-    title: 'Прощайте кредиты, здравствуй свобода!',
-    text: 'Долго сомневался, стоит ли обращаться за банкротством, но здесь мне всё разложили по полочкам. Процесс прошёл спокойно, без давления. Теперь у меня чистая кредитная история и новые возможности. Спасибо за профессионализм!',
-    date: '10 декабря 2023',
-    sum: '3 150 000 ₽',
-    name: 'Анна К., Санкт-Петербург'
-  },
-  {
-    title: 'Из долговой ямы – к новой жизни!',
-    text: 'Обратилась с юридическим вопросом, и уже на первой консультации стало понятно, что мне действительно помогут. Всё чётко, без лишних обещаний, зато с реальным результатом. Спасибо, что помогли выбраться из долговой ямы!',
-    date: '5 марта 2024',
-    sum: '1 920 000 ₽',
-    name: 'Марина Л., Казань'
-  },
-  {
-    title: 'Прощайте кредиты, здравствуй свобода!',
-    text: 'Долго сомневался, стоит ли обращаться за банкротством, но здесь мне всё разложили по полочкам. Процесс прошёл спокойно, без давления. Теперь у меня чистая кредитная история и новые возможности. Спасибо за профессионализм!',
-    date: '10 декабря 2023',
-    sum: '3 150 000 ₽',
-    name: 'Анна К., Санкт-Петербург'
-  }
-]
+import { useGetReviewsQuery } from 'app/api/reviewsApi'
 
 type ReviewProps = {
   btn?: boolean
@@ -53,6 +16,7 @@ export function Review({ btn }: ReviewProps) {
   const prevRef = useRef(null)
   const nextRef = useRef(null)
   const resize = useResize(798)
+  const { data: reviews } = useGetReviewsQuery()
 
   return (
     <section className={style.review}>
@@ -66,12 +30,16 @@ export function Review({ btn }: ReviewProps) {
       </div>
       <div className="container">
         <div className={style.swiper}>
-          <SwiperComponent
-            data={reviews}
-            prevRef={prevRef}
-            nextRef={nextRef}
-            children={(item) => <ReviewContent {...item} />}
-          />
+          {reviews && reviews?.length > 0 ? (
+            <SwiperComponent
+              data={reviews}
+              prevRef={prevRef}
+              nextRef={nextRef}
+              children={(item) => <ReviewContent {...item} />}
+            />
+          ) : (
+            <p className={style.textReview}>Отзывов пока нет</p>
+          )}
         </div>
         <div className={btn && !resize ? 'btn-group' : ''}>
           {btn && !resize && <Button>Смотреть все отзывы</Button>}

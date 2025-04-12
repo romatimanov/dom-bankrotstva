@@ -1,54 +1,33 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-export const articlesApi = createApi({
-  reducerPath: 'articlesApi',
+export const teamApi = createApi({
+  reducerPath: 'teamApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
   endpoints: (builder) => ({
-    getArticles: builder.query<any[], void>({
-      query: () => 'articles',
+    getTeam: builder.query<any[], void>({
+      query: () => 'team',
       transformResponse: (response: { success: boolean; data: any[] }) => response.data || []
     }),
 
-    getArticleBySlug: builder.query<any, string>({
-      query: (slug) => `articles?slug=${slug}`,
-      transformResponse: (response: { success: boolean; data: any }) => response.data
-    }),
-
-    addLike: builder.mutation<any, { id: number }>({
-      query: ({ id }) => ({
-        url: 'likes',
+    createTeam: builder.mutation<any, Partial<any>>({
+      query: (team) => ({
+        url: 'team',
         method: 'POST',
-        body: { id }
+        body: team
       })
     }),
 
-    addView: builder.mutation<any, { id: number }>({
-      query: ({ id }) => ({
-        url: `views`,
-        method: 'POST',
-        body: { id }
-      })
-    }),
-
-    createArticle: builder.mutation<any, Partial<any>>({
-      query: (article) => ({
-        url: 'articles',
-        method: 'POST',
-        body: article
-      })
-    }),
-
-    updateArticle: builder.mutation<any, { id: number; data: Partial<any> }>({
+    updateTeam: builder.mutation<any, { id: number; data: Partial<any> }>({
       query: ({ id, data }) => ({
-        url: `articles`,
+        url: `team`,
         method: 'PUT',
         body: { id, ...data }
       })
     }),
 
-    deleteArticle: builder.mutation<any, number>({
+    deleteTeam: builder.mutation<any, number>({
       query: (id) => ({
-        url: 'articles',
+        url: 'team',
         method: 'DELETE',
         body: { id }
       })
@@ -79,7 +58,7 @@ export const articlesApi = createApi({
             return { error: { status: 500, data: data.error || 'Ошибка удаления' } }
           }
 
-          return { data: { path } } // без success
+          return { data: { path } }
         } catch (error: any) {
           return { error: { status: 500, data: error?.message || 'Неизвестная ошибка' } }
         }
@@ -89,12 +68,9 @@ export const articlesApi = createApi({
 })
 
 export const {
-  useGetArticlesQuery,
-  useGetArticleBySlugQuery,
-  useAddLikeMutation,
-  useAddViewMutation,
-  useCreateArticleMutation,
-  useUpdateArticleMutation,
-  useDeleteArticleMutation,
+  useGetTeamQuery,
+  useCreateTeamMutation,
+  useUpdateTeamMutation,
+  useDeleteTeamMutation,
   useDeleteImageMutation
-} = articlesApi
+} = teamApi

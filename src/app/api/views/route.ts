@@ -1,30 +1,48 @@
-import { pool } from 'app/lib/db'
+import { supabase } from 'app/lib/supabaseClient'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
-    const { id } = body
+    const { id } = await req.json()
 
     if (!id) {
       return NextResponse.json({ success: false, error: 'Отсутствует ID' }, { status: 400 })
     }
 
-    const [rows]: any = await pool.execute('SELECT views FROM articles WHERE id = ?', [id])
+    // Получаем текущее количество просмотров
+    const { data, error: fetchError } = await supabase
+      .from('posts')
+      .select('views')
+      .eq('id', id)
+      .single()
 
-    if (rows.length === 0) {
-      return NextResponse.json({ success: false, error: 'Статья не найдена' }, { status: 404 })
+    if (fetchError) {
+      return NextResponse.json(
+        { success: false, error: 'Ошибка получения: ' + fetchError.message },
+        { status: 500 }
+      )
     }
 
-    const currentViews = rows[0].views
+    const currentViews = data?.views || 0
     const newViews = currentViews + 1
 
-    await pool.execute('UPDATE articles SET views = ? WHERE id = ?', [newViews, id])
+    // Обновляем количество просмотров
+    const { error: updateError } = await supabase
+      .from('posts')
+      .update({ views: newViews })
+      .eq('id', id)
+
+    if (updateError) {
+      return NextResponse.json(
+        { success: false, error: 'Ошибка обновления: ' + updateError.message },
+        { status: 500 }
+      )
+    }
 
     return NextResponse.json({ success: true, views: newViews })
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: 'Ошибка запроса: ' + String(error) },
+      { success: false, error: 'Ошибка запроса: ' + (error?.message || JSON.stringify(error)) },
       { status: 500 }
     )
   }

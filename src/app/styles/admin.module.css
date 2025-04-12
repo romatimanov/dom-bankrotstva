@@ -19,7 +19,7 @@
   margin-bottom: 30px;
 }
 .sidebar {
-  min-width: 220px;
+  min-width: 260px;
   background: linear-gradient(90deg, #9a0404 0%, #fe0404 100%);
   padding: 20px;
   border-radius: 10px 0 0 10px;
@@ -47,7 +47,9 @@
   transition: all 0.3s ease;
   text-decoration: none;
 }
-
+.sidebarButton {
+  white-space: nowrap;
+}
 .mainContent {
   flex-grow: 1;
   padding: 30px;
@@ -153,7 +155,90 @@
   align-items: center;
   gap: 30px;
 }
+.textReview {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  word-break: break-word;
+}
+.textTeam {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  word-break: break-word;
+}
+.contactTd {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.buttonDelete {
+  font-size: 18px;
+  padding: 10px 0;
+  color: var(--red-500);
+}
+.buttonAdd {
+  color: green;
+  font-size: 18px;
+  padding: 10px 0;
+}
+.branch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+.burger {
+  display: none;
+}
+@media (max-width: 1120px) {
+  .responsiveTable thead {
+    display: none;
+  }
+  .actions {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .responsiveTable tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+  }
 
+  .responsiveTable td {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    text-align: left;
+    position: relative;
+  }
+
+  .responsiveTable td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  .contactTd {
+    max-width: none;
+    white-space: normal;
+  }
+}
 @media (max-width: 768px) {
   .adminLayout {
     display: flex;
@@ -167,17 +252,28 @@
     padding: 15px;
   }
   .sidebar {
-    width: auto;
-    height: auto;
-    padding: 2px 15px;
-    border-radius: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    z-index: 1000;
+    border-radius: 0 10px 10px 0;
+    transform: translate(-100%);
+    transition: all 0.3s ease;
   }
   .sidebarMenu {
     display: flex;
+    flex-direction: column;
     align-items: center;
     font-size: 16px;
     gap: 20px;
-    justify-content: space-between;
+    justify-content: center;
   }
   .sidebar li {
     margin-bottom: 0;
@@ -193,5 +289,20 @@
   }
   .date {
     display: none;
+  }
+  .burger {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    padding: 5px 12px;
+    display: flex;
+    font-size: 18px;
+    background: linear-gradient(90deg, #9a0404 0%, #fe0404 100%);
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    border-radius: 5px;
+  }
+  .sidebar.active {
+    transform: translate(0);
   }
 }

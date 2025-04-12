@@ -1,5 +1,4 @@
-// app/api/likes/route.ts
-import { pool } from 'app/lib/db'
+import { supabase } from 'app/lib/supabaseClient'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
@@ -10,20 +9,38 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const [rows]: any = await pool.execute('SELECT likes FROM articles WHERE id = ?', [id])
-    if (rows.length === 0) {
-      return NextResponse.json({ success: false, error: 'Статья не найдена' }, { status: 404 })
+    const { data, error: fetchError } = await supabase
+      .from('posts')
+      .select('likes')
+      .eq('id', id)
+      .single()
+
+    if (fetchError) {
+      return NextResponse.json(
+        { success: false, error: 'Ошибка получения: ' + fetchError.message },
+        { status: 500 }
+      )
     }
 
-    const currentLikes = rows[0].likes
+    const currentLikes = data?.likes || 0
     const newLikes = currentLikes + 1
 
-    await pool.execute('UPDATE articles SET likes = ? WHERE id = ?', [newLikes, id])
+    const { error: updateError } = await supabase
+      .from('posts')
+      .update({ likes: newLikes })
+      .eq('id', id)
+
+    if (updateError) {
+      return NextResponse.json(
+        { success: false, error: 'Ошибка обновления: ' + updateError.message },
+        { status: 500 }
+      )
+    }
 
     return NextResponse.json({ success: true, likes: newLikes })
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: 'Ошибка запроса: ' + String(error) },
+      { success: false, error: 'Ошибка запроса: ' + (error?.message || JSON.stringify(error)) },
       { status: 500 }
     )
   }

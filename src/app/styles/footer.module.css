@@ -88,6 +88,9 @@
   font-size: 14px;
   color: var(--red-800);
 }
+.footerAddress {
+  max-width: 500px;
+}
 @media (min-width: 920px) {
   .footerLink:hover {
     color: var(--red-500);

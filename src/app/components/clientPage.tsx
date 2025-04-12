@@ -10,10 +10,15 @@ import Modal from './modal'
 import ModalSuccess from './modalSuccess'
 import { About } from './home/about'
 import { Contacts } from './home/contacts'
+import { useGetContactsQuery } from 'app/api/contactsApi'
 
 export function ClientPage() {
   const [isOpenFormModal, setIsOpenFormModal] = useState(false)
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false)
+
+  const { data: contacts = [] } = useGetContactsQuery()
+  const firstContact = contacts[0]
+
   return (
     <>
       <About setIsOpen={setIsOpenFormModal} />
@@ -22,7 +27,8 @@ export function ClientPage() {
       <Review />
       <Qestions />
       <Asnwer />
-      <Contacts id="contacts" />
+
+      {firstContact && <Contacts id="contacts" contacts={firstContact} />}
 
       <Modal
         isOpen={isOpenFormModal}

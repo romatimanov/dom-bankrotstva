@@ -1,7 +1,12 @@
 import style from 'app/styles/home.module.css'
 import { Map } from '../map'
 
-export function Contacts({ id }: { id: string }) {
+type ContactsProps = {
+  id: string
+  contacts: any
+}
+
+export function Contacts({ id, contacts }: ContactsProps) {
   return (
     <section className={style.contacts} id={id}>
       <div className="container">
@@ -14,51 +19,42 @@ export function Contacts({ id }: { id: string }) {
         <div className={style.contactsGroup}>
           <div className={style.contact}>
             <p className={style.contactTitle}>Контактная информация:</p>
-            <a href="tel:+78121234567" className={style.contactLink}>
+            <a href={`tel:${contacts.phone}`} className={style.contactLink}>
               <img src="/icon/phone.svg" alt="phone" />
-              8-800-700-03-99
+              {contacts.phone}
             </a>
-            <a href="mailto:alfavista.moscow@gmail.com" className={style.contactLink}>
+            <a href={`mailto:${contacts.mail}`} className={style.contactLink}>
               <img src="/icon/mail.svg" alt="mail" />
-              alfavista.moscow@gmail.com
+              {contacts.mail}
             </a>
             <p className={style.contactText}>
-              <a href="https://www.u-rist.com" className={style.contactLink}>
+              <a
+                href={`https://www.${contacts.partners}`}
+                className={style.contactLink}
+                target="_blank"
+              >
                 <img src="/icon/partner.svg" alt="mail" />
-                Наши партнеры: <span className={style.contactLinkSpan}>u-rist.com</span>
+                Наши партнеры: <span className={style.contactLinkSpan}>{contacts.partners}</span>
               </a>
             </p>
-            <a href="https://t.me/Alpha_Vista" className={style.contactLink}>
+            <a href={contacts.tgCall} className={style.contactLink} target="_blank">
               <img src="/icon/tg.svg" alt="tg" />
               Telegram: @Alpha_Vistaa
             </a>
           </div>
           <div className={style.contact}>
             <p className={style.contactTitle}>Адрес:</p>
-            <div className={style.contactGroup}>
-              <p className={style.contactGroupTitle}>Филиал в Москве</p>
-              <p className={style.contactGroupText}>
-                ТЦ “Дежнев Плаза” <br /> 127081, город Москва, пр-д Дежнёва, д. 1, офис 32
-              </p>
-            </div>
-            <div className={style.contactGroup}>
-              <p className={style.contactGroupTitle}>Филиал в Дубае</p>
-              <p className={style.contactGroupText}>
-                ALPHAVISTA TRADING - FZCO <br />
-                IFZA Business Park, Building A2, Dubai Silicon Oasis, Dubai, UAE – Local Toll Free:
-                800-IFZA (4392) <br />
-                License Number 40827 <br />
-                Makani Number A1 - <span style={{ color: 'var(--red-500)' }}>3641379065</span>
-              </p>
-            </div>
+            {contacts.branch.map((branch: any, index: number) => (
+              <div className={style.contactGroup} key={index}>
+                <p className={style.contactGroupTitle}>{branch.name}</p>
+                <p className={style.contactGroupText}>{branch.address}</p>
+              </div>
+            ))}
           </div>
           <div className={style.contact}>
             <p className={style.contactTitle}>Юридический адрес:</p>
-            <p className={style.contactGroupText}>ООО «АЛЬФА ВИСТА РУС»</p>
-            <p>
-              Город Москва, Пресненская наб., 12, Москва-Сити, Башня Федерации, Восточная Башня,
-              этаж 12, офис К3
-            </p>
+            <p className={style.contactGroupText}>{contacts.address_name}</p>
+            <p>{contacts.address}</p>
           </div>
         </div>
         <Map />

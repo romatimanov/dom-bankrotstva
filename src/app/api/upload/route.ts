@@ -1,12 +1,5 @@
-// src/app/api/upload/route.ts
+import { supabase } from 'app/lib/supabaseClient'
 import { NextRequest, NextResponse } from 'next/server'
-import cloudinary from 'cloudinary'
-
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!
-})
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
@@ -16,17 +9,59 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Нет файла' }, { status: 400 })
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer())
-  const base64 = buffer.toString('base64')
-  const dataURI = `data:${file.type};base64,${base64}`
-
   try {
-    const res = await cloudinary.v2.uploader.upload(dataURI, {
-      folder: 'your-folder'
-    })
+    const buffer = Buffer.from(await file.arrayBuffer())
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${Date.now()}.${fileExt}`
+    const filePath = `uploads/${fileName}`
 
-    return NextResponse.json({ success: true, url: res.secure_url })
-  } catch (err) {
-    return NextResponse.json({ success: false, error: String(err) })
+    const { error: uploadError } = await supabase.storage
+      .from('dombankrot')
+      .upload(filePath, buffer, {
+        contentType: file.type
+      })
+
+    if (uploadError) throw uploadError
+
+    const publicUrl = `https://fugimwfsmqeepaojaphc.supabase.co/storage/v1/object/public/dombankrot/${filePath}`
+
+    return NextResponse.json({
+      success: true,
+      path: filePath,
+      url: publicUrl
+    })
+  } catch (err: any) {
+    return NextResponse.json({
+      success: false,
+      error: err?.message || String(err)
+    })
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { path } = await req.json()
+
+    console.log('[DELETE IMAGE] path:', path)
+
+    if (!path) {
+      return NextResponse.json(
+        { success: false, error: 'Путь к файлу не передан' },
+        { status: 400 }
+      )
+    }
+
+    const { data, error } = await supabase.storage.from('dombankrot').remove([path])
+
+    console.log('[DELETE RESULT]', { data, error })
+
+    if (error) throw error
+
+    return NextResponse.json({ success: true, path })
+  } catch (err: any) {
+    return NextResponse.json({
+      success: false,
+      error: err?.message || String(err)
+    })
   }
 }

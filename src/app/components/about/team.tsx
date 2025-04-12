@@ -1,44 +1,16 @@
+'use client'
+
 import style from 'app/styles/about.module.css'
 import { SwiperComponent } from '../swiper'
 import { TeamCard } from 'app/ui/teamCard'
 import { useRef } from 'react'
-
-const team = [
-  {
-    img: '/team1.webp',
-    name: 'Анна Сергеевна Ковалева',
-    position: 'Старший юрист',
-    text: 'Специализируется на сопровождении процедур банкротства физических лиц'
-  },
-  {
-    img: '/team2.webp',
-    name: 'Елена Викторовна Белова',
-    position: 'Юрист-арбитражник',
-    text: 'Представляет клиентов в арбитражных судах и оспаривает решения финансовых управляющих.'
-  },
-  {
-    img: '/team3.webp',
-    name: 'Владимир Николаевич Семенов',
-    position: 'Партнер компании, эксперт по банкротству',
-    text: 'Специализируется в сфере банкротства, трудовых и налоговых спорах'
-  },
-  {
-    img: '/team2.webp',
-    name: 'Елена Викторовна Белова',
-    position: 'Юрист-арбитражник',
-    text: 'Представляет клиентов в арбитражных судах и оспаривает решения финансовых управляющих.'
-  },
-  {
-    img: '/team3.webp',
-    name: 'Владимир Николаевич Семенов',
-    position: 'Партнер компании, эксперт по банкротству',
-    text: 'Специализируется в сфере банкротства, трудовых и налоговых спорах'
-  }
-]
+import { useGetTeamQuery } from 'app/api/teamApi'
 
 export function Team() {
   const prevRef = useRef(null)
   const nextRef = useRef(null)
+  const { data = [] } = useGetTeamQuery()
+
   return (
     <section className={style.team}>
       <div className="container">
@@ -51,7 +23,7 @@ export function Team() {
         <div className={style.swiper}>
           <div className={style.swiperWrapper}>
             <SwiperComponent
-              data={team}
+              data={data ?? []}
               prevRef={prevRef}
               nextRef={nextRef}
               children={(item) => <TeamCard {...item} />}
