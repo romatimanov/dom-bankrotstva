@@ -6,9 +6,10 @@ import { Metadata } from 'next'
 export async function generateMetadata({
   params
 }: {
-  params: { slugpage: string }
+  params: Promise<{ slugpage: string }>
 }): Promise<Metadata> {
-  const decodedSlug = decodeURIComponent(params.slugpage)
+  const { slugpage } = await params
+  const decodedSlug = decodeURIComponent(slugpage)
 
   const { data, error } = await supabase
     .from('posts')
@@ -35,8 +36,9 @@ export async function generateMetadata({
   }
 }
 
-export default async function NewsPage({ params }: { params: { slugpage: string } }) {
-  const decodedSlug = decodeURIComponent(params.slugpage)
+export default async function NewsPage({ params }: { params: Promise<{ slugpage: string }> }) {
+  const { slugpage } = await params
+  const decodedSlug = decodeURIComponent(slugpage)
 
   const { data, error } = await supabase.from('posts').select('*').eq('slug', decodedSlug).single()
 
