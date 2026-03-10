@@ -65,13 +65,13 @@ Examples:
 Clone the repository
 
 ```bash id="v2x8fl"
-git clone https://github.com/romatimanov/your-repository-name.git
+git clone https://github.com/romatimanov/dom-bankrotstva.git
 ```
 
 Go to project directory
 
 ```bash id="m8jflp"
-cd your-repository-name
+cd dom-bankrotstva
 ```
 
 Install dependencies
