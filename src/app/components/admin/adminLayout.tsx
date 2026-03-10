@@ -101,16 +101,6 @@ export default function AdminLayout() {
             <button
               className={style.sidebarButton}
               onClick={() => {
-                handleTab('contacts')
-              }}
-            >
-              Контакты
-            </button>
-          </li>
-          <li>
-            <button
-              className={style.sidebarButton}
-              onClick={() => {
                 setTeamId(null)
                 handleTab('createTeam')
               }}
@@ -127,6 +117,16 @@ export default function AdminLayout() {
               }}
             >
               Все сотрудники
+            </button>
+          </li>
+          <li>
+            <button
+              className={style.sidebarButton}
+              onClick={() => {
+                handleTab('contacts')
+              }}
+            >
+              Контакты
             </button>
           </li>
           <li>
