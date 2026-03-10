@@ -6,6 +6,11 @@ The platform provides information about bankruptcy procedures, consultation opti
 Live Demo:
 https://dom-bankrotstva.vercel.app
 
+## Screenshots
+
+![Animation](./screenshots/animation.gif)
+
+
 ---
 
 ## Features
