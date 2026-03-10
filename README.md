@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dom Bankrotstva
 
-## Getting Started
+A responsive business website for a bankruptcy assistance service.
+The platform provides information about bankruptcy procedures, consultation options, and allows users to contact the company through interactive forms.
 
-First, run the development server:
+Live Demo:
+https://dom-bankrotstva.vercel.app
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Features
+
+* Responsive landing pages
+* Service information sections
+* Contact and consultation forms
+* SEO-friendly structure
+* Optimized page performance
+* Clean and accessible UI
+
+---
+
+## Tech Stack
+
+Frontend
+
+* React
+* TypeScript
+* Vite
+
+Styling
+
+* CSS
+* Responsive layout
+
+Forms
+
+* Client-side validation
+
+Deployment
+
+* Vercel
+
+---
+
+## Screenshots
+
+Add screenshots of the interface here.
+
+Examples:
+
+* Main landing page
+* Service sections
+* Contact form
+* Mobile layout
+
+---
+
+## Installation
+
+Clone the repository
+
+```bash id="v2x8fl"
+git clone https://github.com/romatimanov/your-repository-name.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to project directory
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash id="m8jflp"
+cd your-repository-name
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Install dependencies
 
-## Learn More
+```bash id="r6p41k"
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+Start development server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash id="p81jvf"
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```id="sxw0jp"
+src
+ ├── components
+ ├── pages
+ ├── sections
+ ├── assets
+ ├── styles
+ └── utils
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Performance
+
+The project focuses on:
+
+* fast loading speed
+* optimized assets
+* responsive layout across devices
+
+---
+
+## Deployment
+
+The application is deployed on **Vercel**.
+
+Live version:
+https://dom-bankrotstva.vercel.app
+
+---
+
+## Author
+
+Roman Deshevitsyn
+
+GitHub
+https://github.com/romatimanov
+
+LinkedIn
+https://linkedin.com/in/roman-deshevitsyn-1272612b9
